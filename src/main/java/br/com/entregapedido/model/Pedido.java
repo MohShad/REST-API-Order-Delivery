@@ -19,15 +19,15 @@ public class Pedido implements Serializable {
     private Long id;
 
     @Basic
-    @Column(name="data_pedido", nullable = false)
+    @Column(name = "data_pedido", nullable = false)
     private Date dataPedido;
 
     @Basic
-    @Column(name="data_entrega", nullable = false)
+    @Column(name = "data_entrega", nullable = false)
     private Date dataEntrega;
 
     @Basic
-    @Column(name="descricao")
+    @Column(name = "descricao")
     private String descricao;
 
     @Enumerated(EnumType.STRING)
@@ -39,15 +39,20 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ItemPedido.class)
+    @JoinColumn(name = "item_pedido_id")
+    private ItemPedido itemPedido;
+
     public Pedido() {
     }
 
-    public Pedido(Date dataPedido, Date dataEntrega, String descricao, PedidoStatus status, Cliente cliente) {
+    public Pedido(Date dataPedido, Date dataEntrega, String descricao, PedidoStatus status, Cliente cliente, ItemPedido itemPedido) {
         this.dataPedido = dataPedido;
         this.dataEntrega = dataEntrega;
         this.descricao = descricao;
         this.status = status;
         this.cliente = cliente;
+        this.itemPedido = itemPedido;
     }
 
     public static long getSerialVersionUID() {
@@ -102,6 +107,14 @@ public class Pedido implements Serializable {
         this.cliente = cliente;
     }
 
+    public ItemPedido getItemPedido() {
+        return itemPedido;
+    }
+
+    public void setItemPedido(ItemPedido itemPedido) {
+        this.itemPedido = itemPedido;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,12 +125,13 @@ public class Pedido implements Serializable {
                 Objects.equals(dataEntrega, pedido.dataEntrega) &&
                 Objects.equals(descricao, pedido.descricao) &&
                 status == pedido.status &&
-                Objects.equals(cliente, pedido.cliente);
+                Objects.equals(cliente, pedido.cliente) &&
+                Objects.equals(itemPedido, pedido.itemPedido);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, dataPedido, dataEntrega, descricao, status, cliente);
+        return Objects.hash(id, dataPedido, dataEntrega, descricao, status, cliente, itemPedido);
     }
 }
