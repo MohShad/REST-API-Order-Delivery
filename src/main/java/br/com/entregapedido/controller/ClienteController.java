@@ -31,7 +31,7 @@ public class ClienteController {
 
         try {
             if (clienteRepository.existsByCpf(clienteRequestDTO.getCpf())) {
-                return new ResponseEntity(new ApiResponseDTO(false, "Existe cliente registrado com CPF " + clienteRequestDTO.getCpf() + "!"),
+                return new ResponseEntity(new ApiResponseDTO(false, "Existe cliente registrado com CPF: " + clienteRequestDTO.getCpf() + "."),
                         HttpStatus.BAD_REQUEST);
             }
             clienteService.salvarCliente(clienteRequestDTO);
@@ -67,5 +67,5 @@ public class ClienteController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
 }

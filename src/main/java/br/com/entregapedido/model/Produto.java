@@ -24,16 +24,21 @@ public class Produto implements Serializable {
     private Double preco;
 
     @Basic
-    @Column(name="estoque", nullable = false)
-    private Boolean estoque;
+    @Column(name="quantidade_estoque", nullable = false)
+    private Integer quantidadeEstoque;
+
+    @Basic
+    @Column(name="ncm", nullable = false, unique = true)
+    private String ncm;
 
     public Produto() {
     }
 
-    public Produto(String nome, Double preco, Boolean estoque) {
+    public Produto(String nome, Double preco, Integer quantidadeEstoque, String ncm) {
         this.nome = nome;
         this.preco = preco;
-        this.estoque = estoque;
+        this.quantidadeEstoque = quantidadeEstoque;
+        this.ncm = ncm;
     }
 
     public static long getSerialVersionUID() {
@@ -64,12 +69,20 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
-    public Boolean getEstoque() {
-        return estoque;
+    public Integer getQuantidadeEstoque() {
+        return quantidadeEstoque;
     }
 
-    public void setEstoque(Boolean estoque) {
-        this.estoque = estoque;
+    public void setQuantidadeEstoque(Integer quantidadeEstoque) {
+        this.quantidadeEstoque = quantidadeEstoque;
+    }
+
+    public String getNcm() {
+        return ncm;
+    }
+
+    public void setNcm(String ncm) {
+        this.ncm = ncm;
     }
 
     @Override
@@ -80,12 +93,24 @@ public class Produto implements Serializable {
         return Objects.equals(id, produto.id) &&
                 Objects.equals(nome, produto.nome) &&
                 Objects.equals(preco, produto.preco) &&
-                Objects.equals(estoque, produto.estoque);
+                Objects.equals(quantidadeEstoque, produto.quantidadeEstoque) &&
+                Objects.equals(ncm, produto.ncm);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, nome, preco, estoque);
+        return Objects.hash(id, nome, preco, quantidadeEstoque, ncm);
+    }
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", preco=" + preco +
+                ", quantidadeEstoque=" + quantidadeEstoque +
+                ", ncm='" + ncm + '\'' +
+                '}';
     }
 }

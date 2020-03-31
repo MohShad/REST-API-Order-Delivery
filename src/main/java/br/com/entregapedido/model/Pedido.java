@@ -134,4 +134,17 @@ public class Pedido implements Serializable {
 
         return Objects.hash(id, dataPedido, dataEntrega, descricao, status, cliente, itemPedido);
     }
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", dataPedido=" + dataPedido +
+                ", dataEntrega=" + dataEntrega +
+                ", descricao='" + descricao + '\'' +
+                ", status=" + status +
+                ", cliente=" + cliente +
+                ", itemPedido=" + itemPedido +
+                '}';
+    }
 }

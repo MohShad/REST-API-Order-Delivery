@@ -158,4 +158,19 @@ public class Cliente implements Serializable {
 
         return Objects.hash(id, nome, cpf, endereco, endereco_entrega, cep, cidade, estado, email);
     }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", endereco_entrega='" + endereco_entrega + '\'' +
+                ", cep='" + cep + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", estado='" + estado + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

@@ -102,4 +102,15 @@ public class ItemPedido implements Serializable {
 
         return Objects.hash(id, valorTotal, quantidade, descricao, produto);
     }
+
+    @Override
+    public String toString() {
+        return "ItemPedido{" +
+                "id=" + id +
+                ", valorTotal=" + valorTotal +
+                ", quantidade=" + quantidade +
+                ", descricao='" + descricao + '\'' +
+                ", produto=" + produto +
+                '}';
+    }
 }

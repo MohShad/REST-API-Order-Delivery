@@ -106,4 +106,15 @@ public class Entrega implements Serializable {
 
         return Objects.hash(id, dataEnvio, dataEntregue, status, pedido);
     }
+
+    @Override
+    public String toString() {
+        return "Entrega{" +
+                "id=" + id +
+                ", dataEnvio=" + dataEnvio +
+                ", dataEntregue=" + dataEntregue +
+                ", status=" + status +
+                ", pedido=" + pedido +
+                '}';
+    }
 }
