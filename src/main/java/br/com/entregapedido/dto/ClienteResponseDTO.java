@@ -1,5 +1,8 @@
 package br.com.entregapedido.dto;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+@JsonRootName(value = "cliente")
 public class ClienteResponseDTO {
 
     private Long id;

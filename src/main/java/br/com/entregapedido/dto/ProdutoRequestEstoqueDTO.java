@@ -1,8 +1,14 @@
 package br.com.entregapedido.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class ProdutoRequestEstoqueDTO {
 
+    @NotNull
     private String ncm;
+
+    @NotNull
     private Integer quantidadeEstoque;
 
     public ProdutoRequestEstoqueDTO() {

@@ -33,6 +33,7 @@ public class ProdutoController {
                         HttpStatus.BAD_REQUEST);
             }
             produtoService.salvarProduto(produtoRequestDTO);
+
             return new ResponseEntity(new ApiResponseDTO(true, "Produto registrado com successo."),
                     HttpStatus.CREATED);
         } catch (Exception e) {
@@ -47,12 +48,10 @@ public class ProdutoController {
     public ResponseEntity<ProdutoResponseDTO> getProdutoByNcm(@Valid @PathVariable("ncm") String ncm) {
 
         try {
-
             if (!produtoRepository.existsByNcm(ncm)) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Produto não encontrado."),
                         HttpStatus.BAD_REQUEST);
             }
-
             ProdutoResponseDTO produtoResponseDTO = produtoService.getProdutoByNcm(ncm);
 
             return new ResponseEntity<ProdutoResponseDTO>(produtoResponseDTO, HttpStatus.OK);
@@ -67,14 +66,13 @@ public class ProdutoController {
 
     @PostMapping("/addStockQuantity")
     public ResponseEntity<?> aumentarQuantidadeEstoque(@Valid @RequestBody ProdutoRequestEstoqueDTO produtoRequestEstoqueDTO) {
-        try {
 
+        try {
             if (!produtoRepository.existsByNcm(produtoRequestEstoqueDTO.getNcm())) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Produto não encontrado."),
                         HttpStatus.BAD_REQUEST);
             }
-
-            if(produtoRequestEstoqueDTO.getQuantidadeEstoque() <= 0 ) {
+            if (produtoRequestEstoqueDTO.getQuantidadeEstoque() <= 0) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Quantidade deve ser maior que 0."),
                         HttpStatus.BAD_REQUEST);
             }

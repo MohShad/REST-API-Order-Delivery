@@ -1,16 +1,27 @@
 package br.com.entregapedido.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class ProdutoRequestDTO {
 
+    @Size(max= 400)
+    @NotNull
     private String nome;
+
+    @NotNull
     private Double preco;
+
+    @NotNull
     private Integer quantidadeEstoque;
+
+    @NotNull
     private String ncm;
 
     public ProdutoRequestDTO() {
     }
 
-    public ProdutoRequestDTO(String nome, Double preco, Integer quantidadeEstoque, String ncm) {
+    public ProdutoRequestDTO(@Size(max = 400) @NotNull String nome, @NotNull Double preco, @NotNull Integer quantidadeEstoque, @NotNull String ncm) {
         this.nome = nome;
         this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;

@@ -35,6 +35,7 @@ public class ClienteController {
                         HttpStatus.BAD_REQUEST);
             }
             clienteService.salvarCliente(clienteRequestDTO);
+            
             return new ResponseEntity(new ApiResponseDTO(true, "Cliente registrado com successo."),
                     HttpStatus.CREATED);
         } catch (Exception e) {
@@ -50,16 +51,13 @@ public class ClienteController {
     public ResponseEntity<ClienteResponseDTO> getClienteByCpf(@PathVariable("cpf") String cpf) {
 
         try {
-
             if (!clienteRepository.existsByCpf(cpf)) {
                 return new ResponseEntity(new ApiResponseDTO(false, "CPF não encontrado."),
                         HttpStatus.BAD_REQUEST);
             }
-
             ClienteResponseDTO clienteResponseDTO = clienteService.getClienteByCpf(cpf);
 
             return new ResponseEntity<ClienteResponseDTO>(clienteResponseDTO, HttpStatus.OK);
-
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
