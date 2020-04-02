@@ -17,6 +17,7 @@ public class PedidoResponseDTO {
     private Date dataEntrega;
     private String descricao;
     private String numeroPedido;
+    private Double valorTotal;
     private PedidoStatus status;
     private ClienteResponseDTO cliente;
     private ItemPedidoResponsePedidoDTO itemPedido;
@@ -24,12 +25,13 @@ public class PedidoResponseDTO {
     public PedidoResponseDTO() {
     }
 
-    public PedidoResponseDTO(Long id, Date dataPedido, Date dataEntrega, String descricao, String numeroPedido, PedidoStatus status, ClienteResponseDTO cliente, ItemPedidoResponsePedidoDTO itemPedido) {
+    public PedidoResponseDTO(Long id, Date dataPedido, Date dataEntrega, String descricao, String numeroPedido, Double valorTotal, PedidoStatus status, ClienteResponseDTO cliente, ItemPedidoResponsePedidoDTO itemPedido) {
         this.id = id;
         this.dataPedido = dataPedido;
         this.dataEntrega = dataEntrega;
         this.descricao = descricao;
         this.numeroPedido = numeroPedido;
+        this.valorTotal = valorTotal;
         this.status = status;
         this.cliente = cliente;
         this.itemPedido = itemPedido;
@@ -73,6 +75,14 @@ public class PedidoResponseDTO {
 
     public void setNumeroPedido(String numeroPedido) {
         this.numeroPedido = numeroPedido;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
     public PedidoStatus getStatus() {

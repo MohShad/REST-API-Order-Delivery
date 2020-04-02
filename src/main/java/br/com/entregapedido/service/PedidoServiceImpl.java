@@ -12,7 +12,6 @@ import br.com.entregapedido.model.Pedido;
 import br.com.entregapedido.repository.ClienteRepository;
 import br.com.entregapedido.repository.ItemPedidoRepository;
 import br.com.entregapedido.repository.PedidoRepository;
-import br.com.entregapedido.repository.ProdutoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,6 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
 
     @Override
     @Transactional
@@ -85,14 +81,9 @@ public class PedidoServiceImpl implements PedidoService {
             ItemPedidoResponsePedidoDTO itemPedidoResponsePedidoDTO = new ItemPedidoResponsePedidoDTO();
             PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
             ClienteResponseDTO clienteResponseDTO = new ClienteResponseDTO();
+            Double valorTotal = 0.0;
 
             if (listPedidos != null) {
-                pedidoResponseDTO.setId(listPedidos.get(0).getId());
-                pedidoResponseDTO.setDataPedido(listPedidos.get(0).getDataPedido());
-                pedidoResponseDTO.setDataEntrega(listPedidos.get(0).getDataEntrega());
-                pedidoResponseDTO.setDescricao(listPedidos.get(0).getDescricao());
-                pedidoResponseDTO.setNumeroPedido(listPedidos.get(0).getNumeroPedido());
-                pedidoResponseDTO.setStatus(listPedidos.get(0).getStatus());
 
                 clienteResponseDTO.setId(listPedidos.get(0).getCliente().getId());
                 clienteResponseDTO.setNome(listPedidos.get(0).getCliente().getNome());
@@ -104,13 +95,6 @@ public class PedidoServiceImpl implements PedidoService {
                 clienteResponseDTO.setEstado(listPedidos.get(0).getCliente().getEstado());
                 clienteResponseDTO.setEmail(listPedidos.get(0).getCliente().getEmail());
 
-
-                itemPedidoResponsePedidoDTO.setId(listPedidos.get(0).getItemPedido().getId());
-                itemPedidoResponsePedidoDTO.setDescricao(listPedidos.get(0).getItemPedido().getDescricao());
-                itemPedidoResponsePedidoDTO.setQuantidade(listPedidos.get(0).getItemPedido().getQuantidade());
-                itemPedidoResponsePedidoDTO.setValorTotal(listPedidos.get(0).getItemPedido().getValorTotal());
-                itemPedidoResponsePedidoDTO.setNumeroItemPedido(listPedidos.get(0).getItemPedido().getNumeroItemPedido());
-
                 for (Pedido pedido : listPedidos) {
                     ItemPedidoResponseProdutoDTO itemPedidoResponseProdutoDTO = new ItemPedidoResponseProdutoDTO();
                     itemPedidoResponseProdutoDTO.setId(pedido.getItemPedido().getProduto().getId());
@@ -118,8 +102,25 @@ public class PedidoServiceImpl implements PedidoService {
                     itemPedidoResponseProdutoDTO.setNcm(pedido.getItemPedido().getProduto().getNcm());
                     itemPedidoResponseProdutoDTO.setPreco(pedido.getItemPedido().getProduto().getPreco());
 
+                    valorTotal = valorTotal + pedido.getItemPedido().getValorTotal();
+
                     listItemPedidoResponseProdutoDTO.add(itemPedidoResponseProdutoDTO);
                 }
+
+                itemPedidoResponsePedidoDTO.setId(listPedidos.get(0).getItemPedido().getId());
+                itemPedidoResponsePedidoDTO.setDescricao(listPedidos.get(0).getItemPedido().getDescricao());
+                itemPedidoResponsePedidoDTO.setQuantidade(listPedidos.get(0).getItemPedido().getQuantidade());
+                itemPedidoResponsePedidoDTO.setValorTotal(valorTotal);
+                itemPedidoResponsePedidoDTO.setNumeroItemPedido(listPedidos.get(0).getItemPedido().getNumeroItemPedido());
+
+                pedidoResponseDTO.setId(listPedidos.get(0).getId());
+                pedidoResponseDTO.setDataPedido(listPedidos.get(0).getDataPedido());
+                pedidoResponseDTO.setDataEntrega(listPedidos.get(0).getDataEntrega());
+                pedidoResponseDTO.setDescricao(listPedidos.get(0).getDescricao());
+                pedidoResponseDTO.setNumeroPedido(listPedidos.get(0).getNumeroPedido());
+                pedidoResponseDTO.setStatus(listPedidos.get(0).getStatus());
+                pedidoResponseDTO.setValorTotal(valorTotal);
+
             }
 
             pedidoResponseDTO.setCliente(clienteResponseDTO);
