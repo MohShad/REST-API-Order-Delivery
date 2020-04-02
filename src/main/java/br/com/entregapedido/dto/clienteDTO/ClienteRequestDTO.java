@@ -1,6 +1,4 @@
-package br.com.entregapedido.dto;
-
-import com.sun.istack.Nullable;
+package br.com.entregapedido.dto.clienteDTO;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;

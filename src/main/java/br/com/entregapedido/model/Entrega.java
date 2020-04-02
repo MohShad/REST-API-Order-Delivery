@@ -27,7 +27,6 @@ public class Entrega implements Serializable {
     private Date dataEntregue;
 
     @Enumerated(EnumType.STRING)
-    @NaturalId
     @Column(name = "status")
     private EntregaStatus status;
 

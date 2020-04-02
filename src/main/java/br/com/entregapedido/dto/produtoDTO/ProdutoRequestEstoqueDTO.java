@@ -1,7 +1,6 @@
-package br.com.entregapedido.dto;
+package br.com.entregapedido.dto.produtoDTO;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class ProdutoRequestEstoqueDTO {
 

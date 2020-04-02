@@ -1,25 +1,21 @@
-package br.com.entregapedido.dto;
-
+package br.com.entregapedido.dto.itemPedidoDTO;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonRootName(value = "produto")
-public class ProdutoResponseDTO {
+public class ItemPedidoResponseProdutoDTO {
 
     private Long id;
     private String nome;
     private Double preco;
-    private Integer quantidadeEstoque;
     private String ncm;
 
-    public ProdutoResponseDTO() {
-    }
+    public ItemPedidoResponseProdutoDTO(){}
 
-    public ProdutoResponseDTO(Long id, String nome, Double preco, Integer quantidadeEstoque, String ncm) {
+    public ItemPedidoResponseProdutoDTO(Long id, String nome, Double preco, String ncm) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
-        this.quantidadeEstoque = quantidadeEstoque;
         this.ncm = ncm;
     }
 
@@ -45,14 +41,6 @@ public class ProdutoResponseDTO {
 
     public void setPreco(Double preco) {
         this.preco = preco;
-    }
-
-    public Integer getQuantidadeEstoque() {
-        return quantidadeEstoque;
-    }
-
-    public void setQuantidadeEstoque(Integer quantidadeEstoque) {
-        this.quantidadeEstoque = quantidadeEstoque;
     }
 
     public String getNcm() {

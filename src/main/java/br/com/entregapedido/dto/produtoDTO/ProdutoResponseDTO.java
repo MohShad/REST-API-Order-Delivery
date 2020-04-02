@@ -1,31 +1,34 @@
-package br.com.entregapedido.dto;
+package br.com.entregapedido.dto.produtoDTO;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-public class ProdutoRequestDTO {
+import com.fasterxml.jackson.annotation.JsonRootName;
 
-    @Size(max= 400)
-    @NotNull
+@JsonRootName(value = "produto")
+public class ProdutoResponseDTO {
+
+    private Long id;
     private String nome;
-
-    @NotNull
     private Double preco;
-
-    @NotNull
     private Integer quantidadeEstoque;
-
-    @NotNull
     private String ncm;
 
-    public ProdutoRequestDTO() {
+    public ProdutoResponseDTO() {
     }
 
-    public ProdutoRequestDTO(@Size(max = 400) @NotNull String nome, @NotNull Double preco, @NotNull Integer quantidadeEstoque, @NotNull String ncm) {
+    public ProdutoResponseDTO(Long id, String nome, Double preco, Integer quantidadeEstoque, String ncm) {
+        this.id = id;
         this.nome = nome;
         this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;
         this.ncm = ncm;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {

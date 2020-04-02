@@ -1,8 +1,8 @@
 package br.com.entregapedido.controller;
 
 import br.com.entregapedido.dto.ApiResponseDTO;
-import br.com.entregapedido.dto.ClienteRequestDTO;
-import br.com.entregapedido.dto.ClienteResponseDTO;
+import br.com.entregapedido.dto.clienteDTO.ClienteRequestDTO;
+import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
 import br.com.entregapedido.repository.ClienteRepository;
 import br.com.entregapedido.service.ClienteService;
 import org.slf4j.Logger;

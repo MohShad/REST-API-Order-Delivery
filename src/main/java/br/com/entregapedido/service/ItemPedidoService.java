@@ -1,11 +1,11 @@
 package br.com.entregapedido.service;
 
-import br.com.entregapedido.dto.ItemPedidoRequestDTO;
-import br.com.entregapedido.dto.ItemPedidoResponseDTO;
+import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoRequestDTO;
+import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoResponseDTO;
 
 public interface ItemPedidoService {
 
-    void salvarItemPedido(ItemPedidoRequestDTO itemPedidoRequestDTO);
-    ItemPedidoResponseDTO getItemPedidoById(Long id);
+    String salvarItemPedido(ItemPedidoRequestDTO itemPedidoRequestDTO);
+    ItemPedidoResponseDTO getItemPedidoById(String numeroItemPedido);
 
 }

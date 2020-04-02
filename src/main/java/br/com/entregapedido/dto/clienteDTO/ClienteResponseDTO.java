@@ -1,4 +1,4 @@
-package br.com.entregapedido.dto;
+package br.com.entregapedido.dto.clienteDTO;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -14,6 +14,8 @@ public class ClienteResponseDTO {
     private String cidade;
     private String estado;
     private String email;
+
+    public ClienteResponseDTO(){}
 
     public ClienteResponseDTO(Long id, String nome, String cpf, String endereco, String endereco_entrega, String cep, String cidade, String estado, String email) {
         this.id = id;

@@ -1,5 +1,7 @@
 package br.com.entregapedido.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -27,17 +29,22 @@ public class ItemPedido implements Serializable {
     @Column(name = "descricao")
     private String descricao;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Produto.class)
+    @Basic
+    @GenericGenerator(name = "numero_pedido", strategy = "uuid2")
+    private String numeroItemPedido;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Produto.class)
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
     public ItemPedido() {
     }
 
-    public ItemPedido(Double valorTotal, Integer quantidade, String descricao, Produto produto) {
+    public ItemPedido(Double valorTotal, Integer quantidade, String descricao, String numeroItemPedido, Produto produto) {
         this.valorTotal = valorTotal;
         this.quantidade = quantidade;
         this.descricao = descricao;
+        this.numeroItemPedido = numeroItemPedido;
         this.produto = produto;
     }
 
@@ -77,6 +84,14 @@ public class ItemPedido implements Serializable {
         this.descricao = descricao;
     }
 
+    public String getNumeroItemPedido() {
+        return numeroItemPedido;
+    }
+
+    public void setNumeroItemPedido(String numeroItemPedido) {
+        this.numeroItemPedido = numeroItemPedido;
+    }
+
     public Produto getProduto() {
         return produto;
     }
@@ -94,13 +109,14 @@ public class ItemPedido implements Serializable {
                 Objects.equals(valorTotal, that.valorTotal) &&
                 Objects.equals(quantidade, that.quantidade) &&
                 Objects.equals(descricao, that.descricao) &&
+                Objects.equals(numeroItemPedido, that.numeroItemPedido) &&
                 Objects.equals(produto, that.produto);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, valorTotal, quantidade, descricao, produto);
+        return Objects.hash(id, valorTotal, quantidade, descricao, numeroItemPedido, produto);
     }
 
     @Override
@@ -110,6 +126,7 @@ public class ItemPedido implements Serializable {
                 ", valorTotal=" + valorTotal +
                 ", quantidade=" + quantidade +
                 ", descricao='" + descricao + '\'' +
+                ", numeroItemPedido='" + numeroItemPedido + '\'' +
                 ", produto=" + produto +
                 '}';
     }

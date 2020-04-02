@@ -1,7 +1,7 @@
 package br.com.entregapedido.service;
 
-import br.com.entregapedido.dto.ClienteRequestDTO;
-import br.com.entregapedido.dto.ClienteResponseDTO;
+import br.com.entregapedido.dto.clienteDTO.ClienteRequestDTO;
+import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
 
 public interface ClienteService {
 

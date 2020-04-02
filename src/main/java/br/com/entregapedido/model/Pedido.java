@@ -1,6 +1,6 @@
 package br.com.entregapedido.model;
 
-import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,26 +31,30 @@ public class Pedido implements Serializable {
     private String descricao;
 
     @Enumerated(EnumType.STRING)
-    @NaturalId
     @Column(name = "status")
     private PedidoStatus status;
+
+    @Basic
+    @GenericGenerator(name = "numero_pedido", strategy = "uuid2")
+    private String numeroPedido;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Cliente.class)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ItemPedido.class)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ItemPedido.class)
     @JoinColumn(name = "item_pedido_id")
     private ItemPedido itemPedido;
 
     public Pedido() {
     }
 
-    public Pedido(Date dataPedido, Date dataEntrega, String descricao, PedidoStatus status, Cliente cliente, ItemPedido itemPedido) {
+    public Pedido(Date dataPedido, Date dataEntrega, String descricao, PedidoStatus status, String numeroPedido, Cliente cliente, ItemPedido itemPedido) {
         this.dataPedido = dataPedido;
         this.dataEntrega = dataEntrega;
         this.descricao = descricao;
         this.status = status;
+        this.numeroPedido = numeroPedido;
         this.cliente = cliente;
         this.itemPedido = itemPedido;
     }
@@ -99,6 +103,14 @@ public class Pedido implements Serializable {
         this.status = status;
     }
 
+    public String getNumeroPedido() {
+        return numeroPedido;
+    }
+
+    public void setNumeroPedido(String numeroPedido) {
+        this.numeroPedido = numeroPedido;
+    }
+
     public Cliente getCliente() {
         return cliente;
     }
@@ -125,6 +137,7 @@ public class Pedido implements Serializable {
                 Objects.equals(dataEntrega, pedido.dataEntrega) &&
                 Objects.equals(descricao, pedido.descricao) &&
                 status == pedido.status &&
+                Objects.equals(numeroPedido, pedido.numeroPedido) &&
                 Objects.equals(cliente, pedido.cliente) &&
                 Objects.equals(itemPedido, pedido.itemPedido);
     }
@@ -132,7 +145,7 @@ public class Pedido implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, dataPedido, dataEntrega, descricao, status, cliente, itemPedido);
+        return Objects.hash(id, dataPedido, dataEntrega, descricao, status, numeroPedido, cliente, itemPedido);
     }
 
     @Override
@@ -143,6 +156,7 @@ public class Pedido implements Serializable {
                 ", dataEntrega=" + dataEntrega +
                 ", descricao='" + descricao + '\'' +
                 ", status=" + status +
+                ", numeroPedido='" + numeroPedido + '\'' +
                 ", cliente=" + cliente +
                 ", itemPedido=" + itemPedido +
                 '}';

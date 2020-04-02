@@ -1,6 +1,9 @@
 package br.com.entregapedido.controller;
 
-import br.com.entregapedido.dto.*;
+import br.com.entregapedido.dto.ApiResponseDTO;
+import br.com.entregapedido.dto.produtoDTO.ProdutoRequestDTO;
+import br.com.entregapedido.dto.produtoDTO.ProdutoRequestEstoqueDTO;
+import br.com.entregapedido.dto.produtoDTO.ProdutoResponseDTO;
 import br.com.entregapedido.repository.ProdutoRepository;
 import br.com.entregapedido.service.ProdutoService;
 import org.slf4j.Logger;

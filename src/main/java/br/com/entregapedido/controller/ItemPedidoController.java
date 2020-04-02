@@ -1,8 +1,8 @@
 package br.com.entregapedido.controller;
 
 import br.com.entregapedido.dto.ApiResponseDTO;
-import br.com.entregapedido.dto.ItemPedidoRequestDTO;
-import br.com.entregapedido.dto.ItemPedidoResponseDTO;
+import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoRequestDTO;
+import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoResponseDTO;
 import br.com.entregapedido.model.ItemPedido;
 import br.com.entregapedido.model.Produto;
 import br.com.entregapedido.repository.ItemPedidoRepository;
@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,21 +38,23 @@ public class ItemPedidoController {
     public ResponseEntity<?> registerItemPedido(@Valid @RequestBody ItemPedidoRequestDTO itemPedidoRequestDTO) {
 
         try {
-            Optional<Produto> produto = produtoRepository.findById(itemPedidoRequestDTO.getProdutoId());
-            if (!produto.isPresent()) {
-                return new ResponseEntity(new ApiResponseDTO(false, "Produto não encontrado!"),
-                        HttpStatus.BAD_REQUEST);
-            }
-            if (produto.isPresent()) {
-                Produto pr = produto.get();
-                if(pr.getQuantidadeEstoque() < itemPedidoRequestDTO.getQuantidade())
-                return new ResponseEntity(new ApiResponseDTO(false, "Não temos estoque suficiente! Existem "+ pr.getQuantidadeEstoque() + " produto(s) em estoque."),
-                        HttpStatus.BAD_REQUEST);
+            for(int i = 0; itemPedidoRequestDTO.getProdutoId().size() > i; i++){
+                Optional<Produto> produto = produtoRepository.findById(itemPedidoRequestDTO.getProdutoId().get(i));
+                if (!produto.isPresent()) {
+                    return new ResponseEntity(new ApiResponseDTO(false, "Produto não encontrado!"),
+                            HttpStatus.BAD_REQUEST);
+                }
+                if (produto.isPresent()) {
+                    Produto pr = produto.get();
+                    if(pr.getQuantidadeEstoque() < itemPedidoRequestDTO.getQuantidade())
+                        return new ResponseEntity(new ApiResponseDTO(false, "Não temos estoque suficiente! Existem "+ pr.getQuantidadeEstoque() + " produto(s) em estoque."),
+                                HttpStatus.BAD_REQUEST);
+                }
             }
 
-            itemPedidoService.salvarItemPedido(itemPedidoRequestDTO);
+            String numeroItemPedido = itemPedidoService.salvarItemPedido(itemPedidoRequestDTO);
 
-            return new ResponseEntity(new ApiResponseDTO(true, "ItemPedido registrado com successo."),
+            return new ResponseEntity(new ApiResponseDTO(true, "ItemPedido registrado com successo, Cod: "+numeroItemPedido),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,17 +64,17 @@ public class ItemPedidoController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ItemPedidoResponseDTO> getItemPedidoById(@Valid @PathVariable("id")Long id) {
+    @GetMapping("/{numeroItemPedido}")
+    public ResponseEntity<ItemPedidoResponseDTO> getItemPedidoById(@Valid @PathVariable("numeroItemPedido")String numeroItemPedido) {
 
         try {
-            Optional<ItemPedido> itemPedido = itemPedidoRepository.findById(id);
-            if(!itemPedido.isPresent()){
+            List<ItemPedido> itemPedido = itemPedidoRepository.findByNumeroItemPedido(numeroItemPedido);
+            if(itemPedido == null){
                 return new ResponseEntity(new ApiResponseDTO(false, "Item pedido não encontrado."),
                         HttpStatus.BAD_REQUEST);
             }
 
-            ItemPedidoResponseDTO itemPedidoResponseDTO = itemPedidoService.getItemPedidoById(id);
+            ItemPedidoResponseDTO itemPedidoResponseDTO = itemPedidoService.getItemPedidoById(numeroItemPedido);
 
             return new ResponseEntity<ItemPedidoResponseDTO>(itemPedidoResponseDTO, HttpStatus.OK);
         } catch (Exception e) {
