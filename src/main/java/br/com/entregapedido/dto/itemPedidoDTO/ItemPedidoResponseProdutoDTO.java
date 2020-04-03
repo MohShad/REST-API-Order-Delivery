@@ -9,14 +9,16 @@ public class ItemPedidoResponseProdutoDTO {
     private String nome;
     private Double preco;
     private String ncm;
+    private Integer quantidade;
 
     public ItemPedidoResponseProdutoDTO(){}
 
-    public ItemPedidoResponseProdutoDTO(Long id, String nome, Double preco, String ncm) {
+    public ItemPedidoResponseProdutoDTO(Long id, String nome, Double preco, String ncm, Integer quantidade) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
         this.ncm = ncm;
+        this.quantidade = quantidade;
     }
 
     public Long getId() {
@@ -49,5 +51,13 @@ public class ItemPedidoResponseProdutoDTO {
 
     public void setNcm(String ncm) {
         this.ncm = ncm;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 }

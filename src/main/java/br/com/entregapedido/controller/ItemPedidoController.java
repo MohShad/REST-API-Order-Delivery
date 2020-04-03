@@ -54,7 +54,7 @@ public class ItemPedidoController {
 
             String numeroItemPedido = itemPedidoService.salvarItemPedido(itemPedidoRequestDTO);
 
-            return new ResponseEntity(new ApiResponseDTO(true, "ItemPedido registrado com successo, Cod: "+numeroItemPedido),
+            return new ResponseEntity(new ApiResponseDTO(true, "ItemPedido registrado com successo, Número Item de Pedido: "+numeroItemPedido),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();

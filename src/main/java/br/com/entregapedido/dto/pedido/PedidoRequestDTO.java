@@ -14,7 +14,7 @@ public class PedidoRequestDTO {
     private Long clienteId;
 
     @NotNull
-    private List<Long> itemPedidoId;
+    private List<String> numeroItemPedido;
 
     public String getDescricao() {
         return descricao;
@@ -32,11 +32,11 @@ public class PedidoRequestDTO {
         this.clienteId = clienteId;
     }
 
-    public List<Long> getItemPedidoId() {
-        return itemPedidoId;
+    public List<String> getNumeroItemPedido() {
+        return numeroItemPedido;
     }
 
-    public void setItemPedidoId(List<Long> itemPedidoId) {
-        this.itemPedidoId = itemPedidoId;
+    public void setNumeroItemPedido(List<String> numeroItemPedido) {
+        this.numeroItemPedido = numeroItemPedido;
     }
 }

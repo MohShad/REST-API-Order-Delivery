@@ -2,7 +2,6 @@ package br.com.entregapedido.service;
 
 import br.com.entregapedido.controller.PedidoController;
 import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
-import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoResponsePedidoDTO;
 import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoResponseProdutoDTO;
 import br.com.entregapedido.dto.pedido.PedidoRequestDTO;
 import br.com.entregapedido.dto.pedido.PedidoResponseDTO;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 
-import static br.com.entregapedido.model.PedidoStatus.ABERTO;
+import static br.com.entregapedido.model.PedidoStatus.ENVIADO;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
@@ -42,24 +41,26 @@ public class PedidoServiceImpl implements PedidoService {
 
         try {
             String numeroPedido = UUID.randomUUID().toString();
-            for (int i = 0; pedidoRequestDTO.getItemPedidoId().size() > i; i++) {
-                Optional<ItemPedido> itemPedido = itemPedidoRepository.findById(pedidoRequestDTO.getItemPedidoId().get(i));
-                Optional<Cliente> cliente = clienteRepository.findById(pedidoRequestDTO.getClienteId());
+            for (int i = 0; pedidoRequestDTO.getNumeroItemPedido().size() > i; i++) {
+                List<ItemPedido> listItemPedido = itemPedidoRepository.findByNumeroItemPedido(pedidoRequestDTO.getNumeroItemPedido().get(i));
+                for (ItemPedido itemPedido : listItemPedido) {
+                    Optional<Cliente> cliente = clienteRepository.findById(pedidoRequestDTO.getClienteId());
 
-                Pedido pedido = new Pedido();
-                Cliente cl = cliente.get();
-                ItemPedido itP = itemPedido.get();
+                    Pedido pedido = new Pedido();
+                    Cliente cl = cliente.get();
 
-                Date dataPedido = new Date();
-                pedido.setDataPedido(dataPedido);
-                pedido.setDataEntrega(getDateSevenWorkDays(dataPedido));
-                pedido.setDescricao(pedidoRequestDTO.getDescricao());
-                pedido.setStatus(ABERTO);
-                pedido.setCliente(cl);
-                pedido.setItemPedido(itP);
-                pedido.setNumeroPedido(numeroPedido);
+                    Date dataPedido = new Date();
+                    pedido.setDataPedido(dataPedido);
+                    pedido.setDataEntrega(getDateSevenWorkDays(dataPedido));
+                    pedido.setDescricao(pedidoRequestDTO.getDescricao());
+                    pedido.setStatus(ENVIADO);
+                    pedido.setCliente(cl);
+                    pedido.setItemPedido(itemPedido);
+                    pedido.setValorTotal(itemPedido.getValorTotal());
+                    pedido.setNumeroPedido(numeroPedido);
 
-                pedidoRepository.save(pedido);
+                    pedidoRepository.save(pedido);
+                }
             }
 
             return numeroPedido;
@@ -75,57 +76,47 @@ public class PedidoServiceImpl implements PedidoService {
 
         try {
             List<Pedido> listPedidos = pedidoRepository.findByNumeroPedido(numeroPedido);
-            //List<ItemPedidoResponsePedidoDTO> listItemPedidoResponsePedidoDTO = new ArrayList<>();
             List<ItemPedidoResponseProdutoDTO> listItemPedidoResponseProdutoDTO = new ArrayList<>();
 
-            ItemPedidoResponsePedidoDTO itemPedidoResponsePedidoDTO = new ItemPedidoResponsePedidoDTO();
             PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO();
             ClienteResponseDTO clienteResponseDTO = new ClienteResponseDTO();
             Double valorTotal = 0.0;
 
             if (listPedidos != null) {
-
-                clienteResponseDTO.setId(listPedidos.get(0).getCliente().getId());
-                clienteResponseDTO.setNome(listPedidos.get(0).getCliente().getNome());
-                clienteResponseDTO.setCpf(listPedidos.get(0).getCliente().getCpf());
-                clienteResponseDTO.setEndereco(listPedidos.get(0).getCliente().getEndereco());
-                clienteResponseDTO.setEndereco_entrega(listPedidos.get(0).getCliente().getEndereco_entrega());
-                clienteResponseDTO.setCep(listPedidos.get(0).getCliente().getCep());
-                clienteResponseDTO.setCidade(listPedidos.get(0).getCliente().getCidade());
-                clienteResponseDTO.setEstado(listPedidos.get(0).getCliente().getEstado());
-                clienteResponseDTO.setEmail(listPedidos.get(0).getCliente().getEmail());
-
                 for (Pedido pedido : listPedidos) {
+
                     ItemPedidoResponseProdutoDTO itemPedidoResponseProdutoDTO = new ItemPedidoResponseProdutoDTO();
                     itemPedidoResponseProdutoDTO.setId(pedido.getItemPedido().getProduto().getId());
                     itemPedidoResponseProdutoDTO.setNome(pedido.getItemPedido().getProduto().getNome());
                     itemPedidoResponseProdutoDTO.setNcm(pedido.getItemPedido().getProduto().getNcm());
                     itemPedidoResponseProdutoDTO.setPreco(pedido.getItemPedido().getProduto().getPreco());
-
+                    itemPedidoResponseProdutoDTO.setQuantidade(pedido.getItemPedido().getQuantidade());
                     valorTotal = valorTotal + pedido.getItemPedido().getValorTotal();
 
                     listItemPedidoResponseProdutoDTO.add(itemPedidoResponseProdutoDTO);
                 }
-
-                itemPedidoResponsePedidoDTO.setId(listPedidos.get(0).getItemPedido().getId());
-                itemPedidoResponsePedidoDTO.setDescricao(listPedidos.get(0).getItemPedido().getDescricao());
-                itemPedidoResponsePedidoDTO.setQuantidade(listPedidos.get(0).getItemPedido().getQuantidade());
-                itemPedidoResponsePedidoDTO.setValorTotal(valorTotal);
-                itemPedidoResponsePedidoDTO.setNumeroItemPedido(listPedidos.get(0).getItemPedido().getNumeroItemPedido());
-
-                pedidoResponseDTO.setId(listPedidos.get(0).getId());
-                pedidoResponseDTO.setDataPedido(listPedidos.get(0).getDataPedido());
-                pedidoResponseDTO.setDataEntrega(listPedidos.get(0).getDataEntrega());
-                pedidoResponseDTO.setDescricao(listPedidos.get(0).getDescricao());
-                pedidoResponseDTO.setNumeroPedido(listPedidos.get(0).getNumeroPedido());
-                pedidoResponseDTO.setStatus(listPedidos.get(0).getStatus());
-                pedidoResponseDTO.setValorTotal(valorTotal);
-
             }
 
+            clienteResponseDTO.setId(listPedidos.get(0).getCliente().getId());
+            clienteResponseDTO.setNome(listPedidos.get(0).getCliente().getNome());
+            clienteResponseDTO.setCpf(listPedidos.get(0).getCliente().getCpf());
+            clienteResponseDTO.setEndereco(listPedidos.get(0).getCliente().getEndereco());
+            clienteResponseDTO.setEndereco_entrega(listPedidos.get(0).getCliente().getEndereco_entrega());
+            clienteResponseDTO.setCep(listPedidos.get(0).getCliente().getCep());
+            clienteResponseDTO.setCidade(listPedidos.get(0).getCliente().getCidade());
+            clienteResponseDTO.setEstado(listPedidos.get(0).getCliente().getEstado());
+            clienteResponseDTO.setEmail(listPedidos.get(0).getCliente().getEmail());
+
+            pedidoResponseDTO.setId(listPedidos.get(0).getId());
+            pedidoResponseDTO.setDataPedido(listPedidos.get(0).getDataPedido());
+            pedidoResponseDTO.setDataEntrega(listPedidos.get(0).getDataEntrega());
+            pedidoResponseDTO.setDescricao(listPedidos.get(0).getDescricao());
+            pedidoResponseDTO.setNumeroPedido(listPedidos.get(0).getNumeroPedido());
+            pedidoResponseDTO.setStatus(listPedidos.get(0).getStatus());
+            pedidoResponseDTO.setValorTotal(valorTotal);
+
             pedidoResponseDTO.setCliente(clienteResponseDTO);
-            itemPedidoResponsePedidoDTO.setProduto(listItemPedidoResponseProdutoDTO);
-            pedidoResponseDTO.setItemPedido(itemPedidoResponsePedidoDTO);
+            pedidoResponseDTO.setProduto(listItemPedidoResponseProdutoDTO);
 
             return pedidoResponseDTO;
         } catch (Exception e) {

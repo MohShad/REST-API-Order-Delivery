@@ -1,11 +1,11 @@
 package br.com.entregapedido.dto.pedido;
 
 import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
-import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoResponseDTO;
-import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoResponsePedidoDTO;
+import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoResponseProdutoDTO;
 import br.com.entregapedido.model.PedidoStatus;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,12 +20,12 @@ public class PedidoResponseDTO {
     private Double valorTotal;
     private PedidoStatus status;
     private ClienteResponseDTO cliente;
-    private ItemPedidoResponsePedidoDTO itemPedido;
+    private List<ItemPedidoResponseProdutoDTO> produto;
 
     public PedidoResponseDTO() {
     }
 
-    public PedidoResponseDTO(Long id, Date dataPedido, Date dataEntrega, String descricao, String numeroPedido, Double valorTotal, PedidoStatus status, ClienteResponseDTO cliente, ItemPedidoResponsePedidoDTO itemPedido) {
+    public PedidoResponseDTO(Long id, Date dataPedido, Date dataEntrega, String descricao, String numeroPedido, Double valorTotal, PedidoStatus status, ClienteResponseDTO cliente, List<ItemPedidoResponseProdutoDTO> produto) {
         this.id = id;
         this.dataPedido = dataPedido;
         this.dataEntrega = dataEntrega;
@@ -34,7 +34,7 @@ public class PedidoResponseDTO {
         this.valorTotal = valorTotal;
         this.status = status;
         this.cliente = cliente;
-        this.itemPedido = itemPedido;
+        this.produto = produto;
     }
 
     public Long getId() {
@@ -101,11 +101,11 @@ public class PedidoResponseDTO {
         this.cliente = cliente;
     }
 
-    public ItemPedidoResponsePedidoDTO getItemPedido() {
-        return itemPedido;
+    public List<ItemPedidoResponseProdutoDTO> getProduto() {
+        return produto;
     }
 
-    public void setItemPedido(ItemPedidoResponsePedidoDTO itemPedido) {
-        this.itemPedido = itemPedido;
+    public void setProduto(List<ItemPedidoResponseProdutoDTO> produto) {
+        this.produto = produto;
     }
 }

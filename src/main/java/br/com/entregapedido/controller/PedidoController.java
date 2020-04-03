@@ -43,9 +43,9 @@ public class PedidoController {
     public ResponseEntity<?> registerPedido(@Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
 
         try {
-            for(int i = 0; pedidoRequestDTO.getItemPedidoId().size() > i; i++){
-                Optional<ItemPedido> itemPedido = itemPedidoRepository.findById(pedidoRequestDTO.getItemPedidoId().get(i));
-                if (!itemPedido.isPresent()) {
+            for(int i = 0; pedidoRequestDTO.getNumeroItemPedido().size() > i; i++){
+                List<ItemPedido> itemPedido = itemPedidoRepository.findByNumeroItemPedido(pedidoRequestDTO.getNumeroItemPedido().get(i));
+                if (itemPedido == null) {
                     return new ResponseEntity(new ApiResponseDTO(false, "Item pedido não encontrado!"),
                             HttpStatus.BAD_REQUEST);
                 }
@@ -58,7 +58,7 @@ public class PedidoController {
 
             String numeroPedido = pedidoService.salvarPedido(pedidoRequestDTO);
 
-            return new ResponseEntity(new ApiResponseDTO(true, "Pedido registrado com successo, Cod: "+numeroPedido),
+            return new ResponseEntity(new ApiResponseDTO(true, "Pedido registrado com successo, Número do Pedido: "+numeroPedido),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();

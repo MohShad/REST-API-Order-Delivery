@@ -30,6 +30,10 @@ public class Pedido implements Serializable {
     @Column(name = "descricao")
     private String descricao;
 
+    @Basic
+    @Column(name = "valor_total")
+    private Double valorTotal;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private PedidoStatus status;
@@ -49,10 +53,11 @@ public class Pedido implements Serializable {
     public Pedido() {
     }
 
-    public Pedido(Date dataPedido, Date dataEntrega, String descricao, PedidoStatus status, String numeroPedido, Cliente cliente, ItemPedido itemPedido) {
+    public Pedido(Date dataPedido, Date dataEntrega, String descricao, Double valorTotal, PedidoStatus status, String numeroPedido, Cliente cliente, ItemPedido itemPedido) {
         this.dataPedido = dataPedido;
         this.dataEntrega = dataEntrega;
         this.descricao = descricao;
+        this.valorTotal = valorTotal;
         this.status = status;
         this.numeroPedido = numeroPedido;
         this.cliente = cliente;
@@ -93,6 +98,14 @@ public class Pedido implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
     public PedidoStatus getStatus() {
@@ -136,6 +149,7 @@ public class Pedido implements Serializable {
                 Objects.equals(dataPedido, pedido.dataPedido) &&
                 Objects.equals(dataEntrega, pedido.dataEntrega) &&
                 Objects.equals(descricao, pedido.descricao) &&
+                Objects.equals(valorTotal, pedido.valorTotal) &&
                 status == pedido.status &&
                 Objects.equals(numeroPedido, pedido.numeroPedido) &&
                 Objects.equals(cliente, pedido.cliente) &&
@@ -145,7 +159,7 @@ public class Pedido implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, dataPedido, dataEntrega, descricao, status, numeroPedido, cliente, itemPedido);
+        return Objects.hash(id, dataPedido, dataEntrega, descricao, valorTotal, status, numeroPedido, cliente, itemPedido);
     }
 
     @Override
@@ -155,6 +169,7 @@ public class Pedido implements Serializable {
                 ", dataPedido=" + dataPedido +
                 ", dataEntrega=" + dataEntrega +
                 ", descricao='" + descricao + '\'' +
+                ", valorTotal=" + valorTotal +
                 ", status=" + status +
                 ", numeroPedido='" + numeroPedido + '\'' +
                 ", cliente=" + cliente +
