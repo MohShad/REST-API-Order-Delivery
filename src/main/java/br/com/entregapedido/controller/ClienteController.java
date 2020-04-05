@@ -3,6 +3,7 @@ package br.com.entregapedido.controller;
 import br.com.entregapedido.dto.ApiResponseDTO;
 import br.com.entregapedido.dto.clienteDTO.ClienteRequestDTO;
 import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
+import br.com.entregapedido.dto.clienteDTO.ClienteResponseSaveDTO;
 import br.com.entregapedido.repository.ClienteRepository;
 import br.com.entregapedido.service.ClienteService;
 import org.slf4j.Logger;
@@ -34,9 +35,9 @@ public class ClienteController {
                 return new ResponseEntity(new ApiResponseDTO(false, "Existe cliente registrado com CPF: " + clienteRequestDTO.getCpf() + "."),
                         HttpStatus.BAD_REQUEST);
             }
-            clienteService.salvarCliente(clienteRequestDTO);
-            
-            return new ResponseEntity(new ApiResponseDTO(true, "Cliente registrado com successo."),
+            Long id = clienteService.salvarCliente(clienteRequestDTO);
+
+            return new ResponseEntity(new ClienteResponseSaveDTO(true, "Cliente registrado com successo.", id),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();

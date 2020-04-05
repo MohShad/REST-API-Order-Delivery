@@ -1,20 +1,27 @@
 package br.com.entregapedido.dto.pedido;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import br.com.entregapedido.dto.produtoDTO.ProdutoQuantidadeRequestDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class PedidoRequestDTO {
+public class PedidoRequestDTO implements Serializable {
 
-    @NotNull
-    @Size(max = 2000)
+    private static final long serialVersionUID = 1L;
+
+    @JsonProperty
     private String descricao;
 
-    @NotNull
+    @JsonProperty
     private Long clienteId;
 
-    @NotNull
-    private List<String> numeroItemPedido;
+    @JsonProperty
+    private List<ProdutoQuantidadeRequestDTO> produto;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public String getDescricao() {
         return descricao;
@@ -32,11 +39,11 @@ public class PedidoRequestDTO {
         this.clienteId = clienteId;
     }
 
-    public List<String> getNumeroItemPedido() {
-        return numeroItemPedido;
+    public List<ProdutoQuantidadeRequestDTO> getProduto() {
+        return produto;
     }
 
-    public void setNumeroItemPedido(List<String> numeroItemPedido) {
-        this.numeroItemPedido = numeroItemPedido;
+    public void setProduto(List<ProdutoQuantidadeRequestDTO> produto) {
+        this.produto = produto;
     }
 }

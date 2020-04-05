@@ -1,6 +1,6 @@
 package br.com.entregapedido.model;
 
-import org.hibernate.annotations.NaturalId;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,28 +19,49 @@ public class Entrega implements Serializable {
     private Long id;
 
     @Basic
-    @Column(name = "data_envio", nullable = false)
-    private Date dataEnvio;
+    @CreatedDate
+    @Column(name = "created_at")
+    private Date createdAt;
 
     @Basic
-    @Column(name = "data_entregue")
-    private Date dataEntregue;
+    @Column(name = "numero_pedido")
+    private String numeroPedido;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private EntregaStatus status;
+    @Basic
+    @Column(name = "valor_total")
+    private Double valorTotal;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Pedido.class)
+    @Basic
+    @Column(name = "quantidade_produto")
+    private Integer quantidadeProduto;
+
+    @Basic
+    @Column(name = "endereco_entrega")
+    private String enderecoEntrega;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Cliente.class)
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Produto.class)
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Pedido.class)
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 
     public Entrega() {
     }
 
-    public Entrega(Date dataEnvio, Date dataEntregue, EntregaStatus status, Pedido pedido) {
-        this.dataEnvio = dataEnvio;
-        this.dataEntregue = dataEntregue;
-        this.status = status;
+    public Entrega(Date createdAt, String numeroPedido, Double valorTotal, Integer quantidadeProduto, String enderecoEntrega, Cliente cliente, Produto produto, Pedido pedido) {
+        this.createdAt = createdAt;
+        this.numeroPedido = numeroPedido;
+        this.valorTotal = valorTotal;
+        this.quantidadeProduto = quantidadeProduto;
+        this.enderecoEntrega = enderecoEntrega;
+        this.cliente = cliente;
+        this.produto = produto;
         this.pedido = pedido;
     }
 
@@ -56,28 +77,60 @@ public class Entrega implements Serializable {
         this.id = id;
     }
 
-    public Date getDataEnvio() {
-        return dataEnvio;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDataEnvio(Date dataEnvio) {
-        this.dataEnvio = dataEnvio;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getDataEntregue() {
-        return dataEntregue;
+    public String getNumeroPedido() {
+        return numeroPedido;
     }
 
-    public void setDataEntregue(Date dataEntregue) {
-        this.dataEntregue = dataEntregue;
+    public void setNumeroPedido(String numeroPedido) {
+        this.numeroPedido = numeroPedido;
     }
 
-    public EntregaStatus getStatus() {
-        return status;
+    public Double getValorTotal() {
+        return valorTotal;
     }
 
-    public void setStatus(EntregaStatus status) {
-        this.status = status;
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public Integer getQuantidadeProduto() {
+        return quantidadeProduto;
+    }
+
+    public void setQuantidadeProduto(Integer quantidadeProduto) {
+        this.quantidadeProduto = quantidadeProduto;
+    }
+
+    public String getEnderecoEntrega() {
+        return enderecoEntrega;
+    }
+
+    public void setEnderecoEntrega(String enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
     public Pedido getPedido() {
@@ -94,25 +147,33 @@ public class Entrega implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Entrega entrega = (Entrega) o;
         return Objects.equals(id, entrega.id) &&
-                Objects.equals(dataEnvio, entrega.dataEnvio) &&
-                Objects.equals(dataEntregue, entrega.dataEntregue) &&
-                status == entrega.status &&
+                Objects.equals(createdAt, entrega.createdAt) &&
+                Objects.equals(numeroPedido, entrega.numeroPedido) &&
+                Objects.equals(valorTotal, entrega.valorTotal) &&
+                Objects.equals(quantidadeProduto, entrega.quantidadeProduto) &&
+                Objects.equals(enderecoEntrega, entrega.enderecoEntrega) &&
+                Objects.equals(cliente, entrega.cliente) &&
+                Objects.equals(produto, entrega.produto) &&
                 Objects.equals(pedido, entrega.pedido);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, dataEnvio, dataEntregue, status, pedido);
+        return Objects.hash(id, createdAt, numeroPedido, valorTotal, quantidadeProduto, enderecoEntrega, cliente, produto, pedido);
     }
 
     @Override
     public String toString() {
         return "Entrega{" +
                 "id=" + id +
-                ", dataEnvio=" + dataEnvio +
-                ", dataEntregue=" + dataEntregue +
-                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", numeroPedido='" + numeroPedido + '\'' +
+                ", valorTotal=" + valorTotal +
+                ", quantidadeProduto=" + quantidadeProduto +
+                ", enderecoEntrega='" + enderecoEntrega + '\'' +
+                ", cliente=" + cliente +
+                ", produto=" + produto +
                 ", pedido=" + pedido +
                 '}';
     }

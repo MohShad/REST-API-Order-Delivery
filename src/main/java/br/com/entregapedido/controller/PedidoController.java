@@ -3,12 +3,13 @@ package br.com.entregapedido.controller;
 import br.com.entregapedido.dto.ApiResponseDTO;
 import br.com.entregapedido.dto.pedido.PedidoRequestDTO;
 import br.com.entregapedido.dto.pedido.PedidoResponseDTO;
+import br.com.entregapedido.dto.pedido.PedidoResponseSaveDTO;
 import br.com.entregapedido.model.Cliente;
-import br.com.entregapedido.model.ItemPedido;
 import br.com.entregapedido.model.Pedido;
+import br.com.entregapedido.model.Produto;
 import br.com.entregapedido.repository.ClienteRepository;
-import br.com.entregapedido.repository.ItemPedidoRepository;
 import br.com.entregapedido.repository.PedidoRepository;
+import br.com.entregapedido.repository.ProdutoRepository;
 import br.com.entregapedido.service.PedidoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class PedidoController {
     private static final Logger logger = LoggerFactory.getLogger(PedidoController.class);
 
     @Autowired
-    private ItemPedidoRepository itemPedidoRepository;
+    private ProdutoRepository produtoRepository;
 
     @Autowired
     private ClienteRepository clienteRepository;
@@ -43,10 +44,19 @@ public class PedidoController {
     public ResponseEntity<?> registerPedido(@Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
 
         try {
-            for(int i = 0; pedidoRequestDTO.getNumeroItemPedido().size() > i; i++){
-                List<ItemPedido> itemPedido = itemPedidoRepository.findByNumeroItemPedido(pedidoRequestDTO.getNumeroItemPedido().get(i));
-                if (itemPedido == null) {
-                    return new ResponseEntity(new ApiResponseDTO(false, "Item pedido não encontrado!"),
+            for (int i = 0; pedidoRequestDTO.getProduto().size() > i; i++) {
+                Optional<Produto> produto = produtoRepository.findById(pedidoRequestDTO.getProduto().get(i).getId());
+                Produto pr = produto.get();
+                if (!produto.isPresent()) {
+                    return new ResponseEntity(new ApiResponseDTO(false, "Produto com id " + pedidoRequestDTO.getProduto().get(i).getId() + " não encontrado!"),
+                            HttpStatus.BAD_REQUEST);
+                }
+                if (pedidoRequestDTO.getProduto().get(i).getQuantidade() <= 0) {
+                    return new ResponseEntity(new ApiResponseDTO(false, "Quantidade deve ser maior que 0."),
+                            HttpStatus.BAD_REQUEST);
+                }
+                if (pedidoRequestDTO.getProduto().get(i).getQuantidade() > pr.getQuantidadeEstoque()) {
+                    return new ResponseEntity(new ApiResponseDTO(false, "Não temos estoque suficiente! Existem " + pr.getQuantidadeEstoque() + " produto(s) em estoque."),
                             HttpStatus.BAD_REQUEST);
                 }
             }
@@ -58,7 +68,7 @@ public class PedidoController {
 
             String numeroPedido = pedidoService.salvarPedido(pedidoRequestDTO);
 
-            return new ResponseEntity(new ApiResponseDTO(true, "Pedido registrado com successo, Número do Pedido: "+numeroPedido),
+            return new ResponseEntity(new PedidoResponseSaveDTO(true, "Pedido registrado com successo.", numeroPedido),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,11 +79,11 @@ public class PedidoController {
     }
 
     @GetMapping("/{numeroPedido}")
-    public ResponseEntity<PedidoResponseDTO> getPedidoById(@Valid @PathVariable("numeroPedido")String numeroPedido) {
+    public ResponseEntity<PedidoResponseDTO> getPedidoById(@Valid @PathVariable("numeroPedido") String numeroPedido) {
 
         try {
             List<Pedido> pedido = pedidoRepository.findByNumeroPedido(numeroPedido);
-            if(pedido.isEmpty()){
+            if (pedido.isEmpty()) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Pedido não encontrado."),
                         HttpStatus.BAD_REQUEST);
             }

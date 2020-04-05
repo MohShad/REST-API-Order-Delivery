@@ -21,31 +21,32 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     @Transactional
-    public void salvarCliente(ClienteRequestDTO clienteRequestDTO) {
+    public Long salvarCliente(ClienteRequestDTO clienteRequestDTO) {
 
         try {
             Cliente cl = new Cliente();
             cl.setNome(clienteRequestDTO.getNome());
             cl.setCpf(clienteRequestDTO.getCpf());
             cl.setEndereco(clienteRequestDTO.getEndereco());
-            cl.setEndereco_entrega(clienteRequestDTO.getEndereco_entrega());
+            cl.setEnderecoEntrega(clienteRequestDTO.getEnderecoEntrega());
             cl.setCep(clienteRequestDTO.getCep());
             cl.setCidade(clienteRequestDTO.getCidade());
             cl.setEstado(clienteRequestDTO.getEstado());
             cl.setEmail(clienteRequestDTO.getEmail());
 
             clienteRepository.save(cl);
+            return cl.getId();
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
+            return null;
         }
-
     }
 
     @Override
     public ClienteResponseDTO getClienteByCpf(String cpf) {
         Cliente cliente = clienteRepository.findByCpf(cpf);
-        ClienteResponseDTO clienteResponseDTO = new ClienteResponseDTO(cliente.getId(), cliente.getNome(), cliente.getCpf(), cliente.getEndereco(), cliente.getEndereco_entrega(), cliente.getCep(), cliente.getCidade(), cliente.getEstado(), cliente.getEmail());
+        ClienteResponseDTO clienteResponseDTO = new ClienteResponseDTO(cliente.getId(), cliente.getNome(), cliente.getCpf(), cliente.getEndereco(), cliente.getEnderecoEntrega(), cliente.getCep(), cliente.getCidade(), cliente.getEstado(), cliente.getEmail());
         return clienteResponseDTO;
     }
 

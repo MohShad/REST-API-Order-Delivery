@@ -7,6 +7,8 @@ import br.com.entregapedido.dto.produtoDTO.ProdutoResponseDTO;
 public interface ProdutoService {
 
     void salvarProduto(ProdutoRequestDTO produtoRequestDTO);
+
     ProdutoResponseDTO getProdutoByNcm(String ncm);
+
     void increaseStockQuantity(ProdutoRequestEstoqueDTO produtoRequestEstoqueDTO);
 }

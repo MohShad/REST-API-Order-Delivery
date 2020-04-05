@@ -6,35 +6,35 @@ import javax.validation.constraints.Size;
 
 public class ClienteRequestDTO {
 
-    @Size(max= 100)
+    @Size(max = 100)
     @NotNull
     private String nome;
 
-    @Size(max= 11)
+    @Size(max = 11)
     @NotNull
     private String cpf;
 
-    @Size(max= 100)
+    @Size(max = 100)
     @NotNull
     private String endereco;
 
-    @Size(max= 100)
+    @Size(max = 100)
     @NotNull
-    private String endereco_entrega;
+    private String enderecoEntrega;
 
-    @Size(max= 9)
+    @Size(max = 9)
     @NotNull
     private String cep;
 
-    @Size(max= 50)
+    @Size(max = 50)
     @NotNull
     private String cidade;
 
-    @Size(max= 50)
+    @Size(max = 50)
     @NotNull
     private String estado;
 
-    @Size(max= 100)
+    @Size(max = 100)
     @NotNull
     @Email
     private String email;
@@ -63,12 +63,12 @@ public class ClienteRequestDTO {
         this.endereco = endereco;
     }
 
-    public String getEndereco_entrega() {
-        return endereco_entrega;
+    public String getEnderecoEntrega() {
+        return enderecoEntrega;
     }
 
-    public void setEndereco_entrega(String endereco_entrega) {
-        this.endereco_entrega = endereco_entrega;
+    public void setEnderecoEntrega(String enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
     }
 
     public String getCep() {

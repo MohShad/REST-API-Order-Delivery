@@ -5,6 +5,7 @@ import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
 
 public interface ClienteService {
 
-    void salvarCliente(ClienteRequestDTO clienteRequestDTO);
+    Long salvarCliente(ClienteRequestDTO clienteRequestDTO);
+
     ClienteResponseDTO getClienteByCpf(String cpf);
 }

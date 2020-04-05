@@ -1,7 +1,11 @@
 package br.com.entregapedido.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -16,29 +20,41 @@ public class Produto implements Serializable {
     private Long id;
 
     @Basic
-    @Column(name="nome", nullable = false)
+    @Column(name = "nome", nullable = false)
     private String nome;
 
     @Basic
-    @Column(name="preco", nullable = false)
+    @Column(name = "preco", nullable = false)
     private Double preco;
 
     @Basic
-    @Column(name="quantidade_estoque", nullable = false)
+    @Column(name = "quantidade_estoque", nullable = false)
     private Integer quantidadeEstoque;
 
     @Basic
-    @Column(name="ncm", nullable = false, unique = true)
+    @Column(name = "ncm", nullable = false, unique = true)
     private String ncm;
+
+    @Basic
+    @CreatedDate
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
+
+    @Basic
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = true)
+    private Date updatedAt;
 
     public Produto() {
     }
 
-    public Produto(String nome, Double preco, Integer quantidadeEstoque, String ncm) {
+    public Produto(String nome, Double preco, Integer quantidadeEstoque, String ncm, Date createdAt, Date updatedAt) {
         this.nome = nome;
         this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;
         this.ncm = ncm;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public static long getSerialVersionUID() {
@@ -85,6 +101,22 @@ public class Produto implements Serializable {
         this.ncm = ncm;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,13 +126,15 @@ public class Produto implements Serializable {
                 Objects.equals(nome, produto.nome) &&
                 Objects.equals(preco, produto.preco) &&
                 Objects.equals(quantidadeEstoque, produto.quantidadeEstoque) &&
-                Objects.equals(ncm, produto.ncm);
+                Objects.equals(ncm, produto.ncm) &&
+                Objects.equals(createdAt, produto.createdAt) &&
+                Objects.equals(updatedAt, produto.updatedAt);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, nome, preco, quantidadeEstoque, ncm);
+        return Objects.hash(id, nome, preco, quantidadeEstoque, ncm, createdAt, updatedAt);
     }
 
     @Override
@@ -111,6 +145,8 @@ public class Produto implements Serializable {
                 ", preco=" + preco +
                 ", quantidadeEstoque=" + quantidadeEstoque +
                 ", ncm='" + ncm + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

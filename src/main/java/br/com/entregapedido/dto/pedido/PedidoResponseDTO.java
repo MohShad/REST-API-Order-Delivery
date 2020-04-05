@@ -1,31 +1,29 @@
 package br.com.entregapedido.dto.pedido;
 
 import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
-import br.com.entregapedido.dto.itemPedidoDTO.ItemPedidoResponseProdutoDTO;
+import br.com.entregapedido.dto.produtoDTO.ProdutoResponsePedidoDTO;
 import br.com.entregapedido.model.PedidoStatus;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @JsonRootName(value = "pedido")
 public class PedidoResponseDTO {
 
     private Long id;
-    private Date dataPedido;
-    private Date dataEntrega;
+    private String dataPedido;
+    private String dataEntrega;
     private String descricao;
     private String numeroPedido;
     private Double valorTotal;
     private PedidoStatus status;
     private ClienteResponseDTO cliente;
-    private List<ItemPedidoResponseProdutoDTO> produto;
+    private List<ProdutoResponsePedidoDTO> produto;
 
     public PedidoResponseDTO() {
     }
 
-    public PedidoResponseDTO(Long id, Date dataPedido, Date dataEntrega, String descricao, String numeroPedido, Double valorTotal, PedidoStatus status, ClienteResponseDTO cliente, List<ItemPedidoResponseProdutoDTO> produto) {
+    public PedidoResponseDTO(Long id, String dataPedido, String dataEntrega, String descricao, String numeroPedido, Double valorTotal, PedidoStatus status, ClienteResponseDTO cliente, List<ProdutoResponsePedidoDTO> produto) {
         this.id = id;
         this.dataPedido = dataPedido;
         this.dataEntrega = dataEntrega;
@@ -45,19 +43,19 @@ public class PedidoResponseDTO {
         this.id = id;
     }
 
-    public Date getDataPedido() {
+    public String getDataPedido() {
         return dataPedido;
     }
 
-    public void setDataPedido(Date dataPedido) {
+    public void setDataPedido(String dataPedido) {
         this.dataPedido = dataPedido;
     }
 
-    public Date getDataEntrega() {
+    public String getDataEntrega() {
         return dataEntrega;
     }
 
-    public void setDataEntrega(Date dataEntrega) {
+    public void setDataEntrega(String dataEntrega) {
         this.dataEntrega = dataEntrega;
     }
 
@@ -101,11 +99,11 @@ public class PedidoResponseDTO {
         this.cliente = cliente;
     }
 
-    public List<ItemPedidoResponseProdutoDTO> getProduto() {
+    public List<ProdutoResponsePedidoDTO> getProduto() {
         return produto;
     }
 
-    public void setProduto(List<ItemPedidoResponseProdutoDTO> produto) {
+    public void setProduto(List<ProdutoResponsePedidoDTO> produto) {
         this.produto = produto;
     }
 }

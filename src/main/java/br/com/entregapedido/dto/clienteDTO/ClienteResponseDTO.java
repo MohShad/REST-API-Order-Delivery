@@ -9,20 +9,21 @@ public class ClienteResponseDTO {
     private String nome;
     private String cpf;
     private String endereco;
-    private String endereco_entrega;
+    private String enderecoEntrega;
     private String cep;
     private String cidade;
     private String estado;
     private String email;
 
-    public ClienteResponseDTO(){}
+    public ClienteResponseDTO() {
+    }
 
-    public ClienteResponseDTO(Long id, String nome, String cpf, String endereco, String endereco_entrega, String cep, String cidade, String estado, String email) {
+    public ClienteResponseDTO(Long id, String nome, String cpf, String endereco, String enderecoEntrega, String cep, String cidade, String estado, String email) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.endereco = endereco;
-        this.endereco_entrega = endereco_entrega;
+        this.enderecoEntrega = enderecoEntrega;
         this.cep = cep;
         this.cidade = cidade;
         this.estado = estado;
@@ -61,12 +62,12 @@ public class ClienteResponseDTO {
         this.endereco = endereco;
     }
 
-    public String getEndereco_entrega() {
-        return endereco_entrega;
+    public String getEnderecoEntrega() {
+        return enderecoEntrega;
     }
 
-    public void setEndereco_entrega(String endereco_entrega) {
-        this.endereco_entrega = endereco_entrega;
+    public void setEnderecoEntrega(String enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
     }
 
     public String getCep() {

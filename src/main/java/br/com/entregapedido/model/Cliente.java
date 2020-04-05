@@ -1,7 +1,11 @@
 package br.com.entregapedido.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -24,12 +28,22 @@ public class Cliente implements Serializable {
     private String cpf;
 
     @Basic
+    @CreatedDate
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
+
+    @Basic
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = true)
+    private Date updatedAt;
+
+    @Basic
     @Column(name = "endereco", nullable = false)
     private String endereco;
 
     @Basic
     @Column(name = "endereco_entrega", nullable = false)
-    private String endereco_entrega;
+    private String enderecoEntrega;
 
     @Basic
     @Column(name = "cep", nullable = false)
@@ -47,14 +61,17 @@ public class Cliente implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
+
     public Cliente() {
     }
 
-    public Cliente(String nome, String cpf, String endereco, String endereco_entrega, String cep, String cidade, String estado, String email) {
+    public Cliente(String nome, String cpf, Date createdAt, Date updatedAt, String endereco, String enderecoEntrega, String cep, String cidade, String estado, String email) {
         this.nome = nome;
         this.cpf = cpf;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.endereco = endereco;
-        this.endereco_entrega = endereco_entrega;
+        this.enderecoEntrega = enderecoEntrega;
         this.cep = cep;
         this.cidade = cidade;
         this.estado = estado;
@@ -89,6 +106,22 @@ public class Cliente implements Serializable {
         this.cpf = cpf;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public String getEndereco() {
         return endereco;
     }
@@ -97,12 +130,12 @@ public class Cliente implements Serializable {
         this.endereco = endereco;
     }
 
-    public String getEndereco_entrega() {
-        return endereco_entrega;
+    public String getEnderecoEntrega() {
+        return enderecoEntrega;
     }
 
-    public void setEndereco_entrega(String endereco_entrega) {
-        this.endereco_entrega = endereco_entrega;
+    public void setEnderecoEntrega(String enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
     }
 
     public String getCep() {
@@ -145,8 +178,10 @@ public class Cliente implements Serializable {
         return Objects.equals(id, cliente.id) &&
                 Objects.equals(nome, cliente.nome) &&
                 Objects.equals(cpf, cliente.cpf) &&
+                Objects.equals(createdAt, cliente.createdAt) &&
+                Objects.equals(updatedAt, cliente.updatedAt) &&
                 Objects.equals(endereco, cliente.endereco) &&
-                Objects.equals(endereco_entrega, cliente.endereco_entrega) &&
+                Objects.equals(enderecoEntrega, cliente.enderecoEntrega) &&
                 Objects.equals(cep, cliente.cep) &&
                 Objects.equals(cidade, cliente.cidade) &&
                 Objects.equals(estado, cliente.estado) &&
@@ -156,7 +191,7 @@ public class Cliente implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, nome, cpf, endereco, endereco_entrega, cep, cidade, estado, email);
+        return Objects.hash(id, nome, cpf, createdAt, updatedAt, endereco, enderecoEntrega, cep, cidade, estado, email);
     }
 
     @Override
@@ -165,8 +200,10 @@ public class Cliente implements Serializable {
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", cpf='" + cpf + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 ", endereco='" + endereco + '\'' +
-                ", endereco_entrega='" + endereco_entrega + '\'' +
+                ", enderecoEntrega='" + enderecoEntrega + '\'' +
                 ", cep='" + cep + '\'' +
                 ", cidade='" + cidade + '\'' +
                 ", estado='" + estado + '\'' +

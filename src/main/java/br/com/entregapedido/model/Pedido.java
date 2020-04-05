@@ -1,6 +1,8 @@
 package br.com.entregapedido.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,8 +21,14 @@ public class Pedido implements Serializable {
     private Long id;
 
     @Basic
-    @Column(name = "data_pedido", nullable = false)
-    private Date dataPedido;
+    @CreatedDate
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
+
+    @Basic
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = true)
+    private Date updatedAt;
 
     @Basic
     @Column(name = "data_entrega", nullable = false)
@@ -34,6 +42,10 @@ public class Pedido implements Serializable {
     @Column(name = "valor_total")
     private Double valorTotal;
 
+    @Basic
+    @Column(name = "quantidade_produto")
+    private Integer quantidadeProduto;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private PedidoStatus status;
@@ -46,22 +58,24 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = ItemPedido.class)
-    @JoinColumn(name = "item_pedido_id")
-    private ItemPedido itemPedido;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Produto.class)
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
 
     public Pedido() {
     }
 
-    public Pedido(Date dataPedido, Date dataEntrega, String descricao, Double valorTotal, PedidoStatus status, String numeroPedido, Cliente cliente, ItemPedido itemPedido) {
-        this.dataPedido = dataPedido;
+    public Pedido(Date createdAt, Date updatedAt, Date dataEntrega, String descricao, Double valorTotal, Integer quantidadeProduto, PedidoStatus status, String numeroPedido, Cliente cliente, Produto produto) {
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.dataEntrega = dataEntrega;
         this.descricao = descricao;
         this.valorTotal = valorTotal;
+        this.quantidadeProduto = quantidadeProduto;
         this.status = status;
         this.numeroPedido = numeroPedido;
         this.cliente = cliente;
-        this.itemPedido = itemPedido;
+        this.produto = produto;
     }
 
     public static long getSerialVersionUID() {
@@ -76,12 +90,20 @@ public class Pedido implements Serializable {
         this.id = id;
     }
 
-    public Date getDataPedido() {
-        return dataPedido;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setDataPedido(Date dataPedido) {
-        this.dataPedido = dataPedido;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Date getDataEntrega() {
@@ -108,6 +130,14 @@ public class Pedido implements Serializable {
         this.valorTotal = valorTotal;
     }
 
+    public Integer getQuantidadeProduto() {
+        return quantidadeProduto;
+    }
+
+    public void setQuantidadeProduto(Integer quantidadeProduto) {
+        this.quantidadeProduto = quantidadeProduto;
+    }
+
     public PedidoStatus getStatus() {
         return status;
     }
@@ -132,12 +162,12 @@ public class Pedido implements Serializable {
         this.cliente = cliente;
     }
 
-    public ItemPedido getItemPedido() {
-        return itemPedido;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setItemPedido(ItemPedido itemPedido) {
-        this.itemPedido = itemPedido;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
     @Override
@@ -146,34 +176,38 @@ public class Pedido implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Pedido pedido = (Pedido) o;
         return Objects.equals(id, pedido.id) &&
-                Objects.equals(dataPedido, pedido.dataPedido) &&
+                Objects.equals(createdAt, pedido.createdAt) &&
+                Objects.equals(updatedAt, pedido.updatedAt) &&
                 Objects.equals(dataEntrega, pedido.dataEntrega) &&
                 Objects.equals(descricao, pedido.descricao) &&
                 Objects.equals(valorTotal, pedido.valorTotal) &&
+                Objects.equals(quantidadeProduto, pedido.quantidadeProduto) &&
                 status == pedido.status &&
                 Objects.equals(numeroPedido, pedido.numeroPedido) &&
                 Objects.equals(cliente, pedido.cliente) &&
-                Objects.equals(itemPedido, pedido.itemPedido);
+                Objects.equals(produto, pedido.produto);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, dataPedido, dataEntrega, descricao, valorTotal, status, numeroPedido, cliente, itemPedido);
+        return Objects.hash(id, createdAt, updatedAt, dataEntrega, descricao, valorTotal, quantidadeProduto, status, numeroPedido, cliente, produto);
     }
 
     @Override
     public String toString() {
         return "Pedido{" +
                 "id=" + id +
-                ", dataPedido=" + dataPedido +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 ", dataEntrega=" + dataEntrega +
                 ", descricao='" + descricao + '\'' +
                 ", valorTotal=" + valorTotal +
+                ", quantidadeProduto=" + quantidadeProduto +
                 ", status=" + status +
                 ", numeroPedido='" + numeroPedido + '\'' +
                 ", cliente=" + cliente +
-                ", itemPedido=" + itemPedido +
+                ", produto=" + produto +
                 '}';
     }
 }

@@ -5,7 +5,7 @@ import javax.validation.constraints.Size;
 
 public class ProdutoRequestDTO {
 
-    @Size(max= 400)
+    @Size(max = 400)
     @NotNull
     private String nome;
 
