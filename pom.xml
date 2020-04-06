@@ -14,6 +14,36 @@
 	<name>entrega-pedido-rest</name>
 	<description>API Entrega do Pedido - REST</description>
 
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<activatedProperties>dev</activatedProperties>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>tst</id>
+			<properties>
+				<activatedProperties>tst</activatedProperties>
+			</properties>
+		</profile>
+		<profile>
+			<id>stg</id>
+			<properties>
+				<activatedProperties>stg</activatedProperties>
+			</properties>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<activatedProperties>prd</activatedProperties>
+			</properties>
+		</profile>
+	</profiles>
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -47,21 +77,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.9.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<version>2.9.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.9.6</version>
-		</dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -73,6 +99,11 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

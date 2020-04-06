@@ -11,6 +11,10 @@ import br.com.entregapedido.repository.ClienteRepository;
 import br.com.entregapedido.repository.PedidoRepository;
 import br.com.entregapedido.repository.ProdutoRepository;
 import br.com.entregapedido.service.PedidoService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +45,7 @@ public class PedidoController {
     private PedidoRepository pedidoRepository;
 
     @PostMapping
-    public ResponseEntity<?> registerPedido(@Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
+    public ResponseEntity<?> registerPedido(@ApiParam(value = "Obejto pedido para criar pedido em banco de dados.", required = true)@Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
 
         try {
             for (int i = 0; pedidoRequestDTO.getProduto().size() > i; i++) {
@@ -56,7 +60,7 @@ public class PedidoController {
                             HttpStatus.BAD_REQUEST);
                 }
                 if (pedidoRequestDTO.getProduto().get(i).getQuantidade() > pr.getQuantidadeEstoque()) {
-                    return new ResponseEntity(new ApiResponseDTO(false, "Não temos estoque suficiente! Existem " + pr.getQuantidadeEstoque() + " produto(s) em estoque."),
+                    return new ResponseEntity(new ApiResponseDTO(false, "Não temos estoque suficiente! Existem " + pr.getQuantidadeEstoque() + " produto(s) em estoque. Id produto: " + pedidoRequestDTO.getProduto().get(i).getId()),
                             HttpStatus.BAD_REQUEST);
                 }
             }
@@ -68,7 +72,7 @@ public class PedidoController {
 
             String numeroPedido = pedidoService.salvarPedido(pedidoRequestDTO);
 
-            return new ResponseEntity(new PedidoResponseSaveDTO(true, "Pedido registrado com successo.", numeroPedido),
+            return new ResponseEntity(new PedidoResponseSaveDTO(true, "Pedido registrado com sucesso.", numeroPedido),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,6 +82,11 @@ public class PedidoController {
         }
     }
 
+    @ApiOperation(value = "Buscar um pedido por numeroPedido", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Não autorizado"),
+            @ApiResponse(code = 200, message = "OK.")
+    })
     @GetMapping("/{numeroPedido}")
     public ResponseEntity<PedidoResponseDTO> getPedidoById(@Valid @PathVariable("numeroPedido") String numeroPedido) {
 

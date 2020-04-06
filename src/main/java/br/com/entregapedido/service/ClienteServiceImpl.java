@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -27,6 +28,7 @@ public class ClienteServiceImpl implements ClienteService {
             Cliente cl = new Cliente();
             cl.setNome(clienteRequestDTO.getNome());
             cl.setCpf(clienteRequestDTO.getCpf());
+            cl.setCreatedAt(new Date());
             cl.setEndereco(clienteRequestDTO.getEndereco());
             cl.setEnderecoEntrega(clienteRequestDTO.getEnderecoEntrega());
             cl.setCep(clienteRequestDTO.getCep());

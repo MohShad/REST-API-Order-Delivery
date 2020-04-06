@@ -46,10 +46,10 @@ public class EntregaServiceImpl implements EntregaService {
                 entrega.setCreatedAt(createdAt);
                 entrega.setEnderecoEntrega(messageDTO.getEnderecoEntrega());
                 entrega.setNumeroPedido(messageDTO.getNumeroPedido());
-                entrega.setValorTotal(messageDTO.getValorTotal());
+                entrega.setValorTotal(messageDTO.getProduto().get(i).getValorTotal());
                 Optional<Cliente> cliente = clienteRepository.findById(messageDTO.getCliente_id());
                 entrega.setCliente(cliente.get());
-                Optional<Produto> produto = produtoRepository.findById(messageDTO.getProduto().get(0).getId());
+                Optional<Produto> produto = produtoRepository.findById(messageDTO.getProduto().get(i).getId());
                 entrega.setQuantidadeProduto(messageDTO.getProduto().get(i).getQauantidade());
                 entrega.setProduto(produto.get());
                 Optional<Pedido> pedido = pedidoRepository.findById(messageDTO.getId());

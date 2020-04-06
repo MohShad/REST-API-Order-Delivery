@@ -6,9 +6,11 @@ import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
 import br.com.entregapedido.dto.clienteDTO.ClienteResponseSaveDTO;
 import br.com.entregapedido.repository.ClienteRepository;
 import br.com.entregapedido.service.ClienteService;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@Configuration
 @RequestMapping("/api/cliente")
 public class ClienteController {
 
@@ -27,17 +30,23 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @ApiOperation(value = "Cadastro do cliente", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Não autorizado"),
+            @ApiResponse(code = 200, message = "Cliente foi cadastrado com sucesso.")
+    })
+
     @PostMapping
-    public ResponseEntity<?> registerCliente(@Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
+    public ResponseEntity<?> registerCliente(@ApiParam(value = "Obejto cliente para criar cliente em banco de dados.", required = true) @Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
 
         try {
             if (clienteRepository.existsByCpf(clienteRequestDTO.getCpf())) {
-                return new ResponseEntity(new ApiResponseDTO(false, "Existe cliente registrado com CPF: " + clienteRequestDTO.getCpf() + "."),
+                return new ResponseEntity(new ApiResponseDTO(false, "Existe cliente registrado com CPF: " + clienteRequestDTO.getCpf()),
                         HttpStatus.BAD_REQUEST);
             }
             Long id = clienteService.salvarCliente(clienteRequestDTO);
 
-            return new ResponseEntity(new ClienteResponseSaveDTO(true, "Cliente registrado com successo.", id),
+            return new ResponseEntity(new ClienteResponseSaveDTO(true, "Cliente registrado com sucesso.", id),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,6 +57,11 @@ public class ClienteController {
 
     }
 
+    @ApiOperation(value = "Buscar cliente por CPF", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Não autorizado"),
+            @ApiResponse(code = 200, message = "OK.")
+    })
     @GetMapping("/{cpf}")
     public ResponseEntity<ClienteResponseDTO> getClienteByCpf(@PathVariable("cpf") String cpf) {
 

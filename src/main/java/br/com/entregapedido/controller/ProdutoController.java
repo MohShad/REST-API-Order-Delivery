@@ -4,8 +4,10 @@ import br.com.entregapedido.dto.ApiResponseDTO;
 import br.com.entregapedido.dto.produtoDTO.ProdutoRequestDTO;
 import br.com.entregapedido.dto.produtoDTO.ProdutoRequestEstoqueDTO;
 import br.com.entregapedido.dto.produtoDTO.ProdutoResponseDTO;
+import br.com.entregapedido.dto.produtoDTO.ProdutoResponseSaveDTO;
 import br.com.entregapedido.repository.ProdutoRepository;
 import br.com.entregapedido.service.ProdutoService;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +21,22 @@ import javax.validation.Valid;
 @RequestMapping("api/produto")
 public class ProdutoController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProdutoController.class);
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    @Autowired
-    private ProdutoService produtoService;
-
+    @ApiOperation(value = "Cadastro do produto", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Não autorizado"),
+            @ApiResponse(code = 200, message = "OK.")
+    })
     @PostMapping
-    public ResponseEntity<?> registerProduto(@Valid @RequestBody ProdutoRequestDTO produtoRequestDTO) {
+    public ResponseEntity<?> registerProduto(@ApiParam(value = "Obejto produto para criar produto em banco de dados.", required = true)@Valid @RequestBody ProdutoRequestDTO produtoRequestDTO) {
 
         try {
             if (produtoRepository.existsByNcm(produtoRequestDTO.getNcm())) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Existe produto registrado com NCM: " + produtoRequestDTO.getNcm() + "."),
                         HttpStatus.BAD_REQUEST);
             }
-            produtoService.salvarProduto(produtoRequestDTO);
+            Long id = produtoService.salvarProduto(produtoRequestDTO);
 
-            return new ResponseEntity(new ApiResponseDTO(true, "Produto registrado com successo."),
+            return new ResponseEntity(new ProdutoResponseSaveDTO(true, "Produto registrado com sucesso.", id),
                     HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,6 +46,19 @@ public class ProdutoController {
         }
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(ProdutoController.class);
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private ProdutoService produtoService;
+
+    @ApiOperation(value = "Buscar um produto por NCM", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Não autorizado"),
+            @ApiResponse(code = 200, message = "OK.")
+    })
     @GetMapping("/{ncm}")
     public ResponseEntity<ProdutoResponseDTO> getProdutoByNcm(@Valid @PathVariable("ncm") String ncm) {
 
@@ -67,6 +79,15 @@ public class ProdutoController {
         }
     }
 
+    @ApiOperation(value = "Adicionar mais produto no estoque", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Não autorizado"),
+            @ApiResponse(code = 200, message = "Qauntidade produto adicionado com sucesso.")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Ncm", value = "ncm", paramType = "path", dataType = "String", required = true),
+            @ApiImplicitParam(name = "Quantidade", value = "quantidadeEstoque", paramType = "path", dataType = "int", required = true),
+    })
     @PostMapping("/addStockQuantity")
     public ResponseEntity<?> aumentarQuantidadeEstoque(@Valid @RequestBody ProdutoRequestEstoqueDTO produtoRequestEstoqueDTO) {
 
@@ -79,9 +100,9 @@ public class ProdutoController {
                 return new ResponseEntity(new ApiResponseDTO(false, "Quantidade deve ser maior que 0."),
                         HttpStatus.BAD_REQUEST);
             }
-            produtoService.increaseStockQuantity(produtoRequestEstoqueDTO);
+            Long id = produtoService.increaseStockQuantity(produtoRequestEstoqueDTO);
 
-            return new ResponseEntity(new ApiResponseDTO(true, "Quantidade estoque do produto alterado com successo."),
+            return new ResponseEntity(new ProdutoResponseSaveDTO(true, "Quantidade estoque do produto alterado com sucesso.", id),
                     HttpStatus.OK);
 
         } catch (Exception e) {

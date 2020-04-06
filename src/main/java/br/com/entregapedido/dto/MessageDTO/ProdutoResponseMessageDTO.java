@@ -5,14 +5,16 @@ public class ProdutoResponseMessageDTO {
     private Long id;
     private Integer qauantidade;
     private Double precoUnitario;
+    private Double valorTotal;
 
     public ProdutoResponseMessageDTO() {
     }
 
-    public ProdutoResponseMessageDTO(Long id, Integer qauantidade, Double precoUnitario) {
+    public ProdutoResponseMessageDTO(Long id, Integer qauantidade, Double precoUnitario, Double valorTotal) {
         this.id = id;
         this.qauantidade = qauantidade;
         this.precoUnitario = precoUnitario;
+        this.valorTotal = valorTotal;
     }
 
     public Long getId() {
@@ -37,5 +39,13 @@ public class ProdutoResponseMessageDTO {
 
     public void setPrecoUnitario(Double precoUnitario) {
         this.precoUnitario = precoUnitario;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
     }
 }

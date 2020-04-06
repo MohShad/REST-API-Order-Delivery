@@ -156,17 +156,19 @@ public class PedidoServiceImpl implements PedidoService {
     public void validateAndParseMessageDTO(String numeroPedido) {
         try {
             MessageDTO messageDTO = new MessageDTO();
-            List<ProdutoResponseMessageDTO> listProdutoResponseMessageDTO = new ArrayList<>();
-            ProdutoResponseMessageDTO produtoResponseMessageDTO = new ProdutoResponseMessageDTO();
+
 
             List<Pedido> listPedido = pedidoRepository.findByNumeroPedido(numeroPedido);
             Double valorTotal = 0D;
 
             if (listPedido != null) {
+                List<ProdutoResponseMessageDTO> listProdutoResponseMessageDTO = new ArrayList<>();
                 for (Pedido pedido : listPedido) {
+                    ProdutoResponseMessageDTO produtoResponseMessageDTO = new ProdutoResponseMessageDTO();
                     produtoResponseMessageDTO.setId(pedido.getProduto().getId());
                     produtoResponseMessageDTO.setQauantidade(pedido.getQuantidadeProduto());
-                    //produtoResponseMessageDTO.setPrecoUnitario(messageDTO.getProduto().get(0).getPrecoUnitario());
+                    produtoResponseMessageDTO.setPrecoUnitario(pedido.getProduto().getPreco());
+                    produtoResponseMessageDTO.setValorTotal(pedido.getQuantidadeProduto() * pedido.getProduto().getPreco());
                     listProdutoResponseMessageDTO.add(produtoResponseMessageDTO);
                     valorTotal = valorTotal + pedido.getValorTotal();
                 }

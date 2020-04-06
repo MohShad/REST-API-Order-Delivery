@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
@@ -23,19 +24,22 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     @Transactional
-    public void salvarProduto(ProdutoRequestDTO produtoRequestDTO) {
+    public Long salvarProduto(ProdutoRequestDTO produtoRequestDTO) {
 
         try {
             Produto pr = new Produto();
             pr.setNome(produtoRequestDTO.getNome());
             pr.setPreco(produtoRequestDTO.getPreco());
+            pr.setCreatedAt(new Date());
             pr.setNcm(produtoRequestDTO.getNcm());
             pr.setQuantidadeEstoque(produtoRequestDTO.getQuantidadeEstoque());
 
             produtoRepository.save(pr);
+            return pr.getId();
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
+            return null;
         }
 
     }
@@ -48,10 +52,18 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public void increaseStockQuantity(ProdutoRequestEstoqueDTO produtoRequestEstoqueDTO) {
-        Produto produto = produtoRepository.findByNcm(produtoRequestEstoqueDTO.getNcm());
-        int novaQuantidade = produto.getQuantidadeEstoque() + produtoRequestEstoqueDTO.getQuantidadeEstoque();
-        produto.setQuantidadeEstoque(novaQuantidade);
-        produtoRepository.save(produto);
+    @Transactional
+    public Long increaseStockQuantity(ProdutoRequestEstoqueDTO produtoRequestEstoqueDTO) {
+        try {
+            Produto produto = produtoRepository.findByNcm(produtoRequestEstoqueDTO.getNcm());
+            int novaQuantidade = produto.getQuantidadeEstoque() + produtoRequestEstoqueDTO.getQuantidadeEstoque();
+            produto.setQuantidadeEstoque(novaQuantidade);
+            produtoRepository.save(produto);
+            return produto.getId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return null;
+        }
     }
 }

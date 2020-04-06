@@ -22,7 +22,7 @@ public class ClienteRequestDTO {
     @NotNull
     private String enderecoEntrega;
 
-    @Size(max = 9)
+    @Size(max = 10)
     @NotNull
     private String cep;
 
@@ -36,8 +36,21 @@ public class ClienteRequestDTO {
 
     @Size(max = 100)
     @NotNull
-    @Email
     private String email;
+
+    public ClienteRequestDTO() {
+    }
+
+    public ClienteRequestDTO(@Size(max = 100) @NotNull String nome, @Size(max = 11) @NotNull String cpf, @Size(max = 100) @NotNull String endereco, @Size(max = 100) @NotNull String enderecoEntrega, @Size(max = 10) @NotNull String cep, @Size(max = 50) @NotNull String cidade, @Size(max = 50) @NotNull String estado, @Size(max = 100) @NotNull String email) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.endereco = endereco;
+        this.enderecoEntrega = enderecoEntrega;
+        this.cep = cep;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.email = email;
+    }
 
     public String getNome() {
         return nome;
