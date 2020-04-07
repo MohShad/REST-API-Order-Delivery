@@ -21,6 +21,14 @@ import javax.validation.Valid;
 @RequestMapping("api/produto")
 public class ProdutoController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProdutoController.class);
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private ProdutoService produtoService;
+
     @ApiOperation(value = "Cadastro do produto", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
@@ -45,14 +53,6 @@ public class ProdutoController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(ProdutoController.class);
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    @Autowired
-    private ProdutoService produtoService;
 
     @ApiOperation(value = "Buscar um produto por NCM", produces = "application/json")
     @ApiResponses({
@@ -84,10 +84,6 @@ public class ProdutoController {
             @ApiResponse(code = 401, message = "Não autorizado"),
             @ApiResponse(code = 200, message = "Qauntidade produto adicionado com sucesso.")
     })
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Ncm", value = "ncm", paramType = "path", dataType = "String", required = true),
-            @ApiImplicitParam(name = "Quantidade", value = "quantidadeEstoque", paramType = "path", dataType = "int", required = true),
-    })
     @PostMapping("/addStockQuantity")
     public ResponseEntity<?> aumentarQuantidadeEstoque(@Valid @RequestBody ProdutoRequestEstoqueDTO produtoRequestEstoqueDTO) {
 
@@ -111,7 +107,6 @@ public class ProdutoController {
             return new ResponseEntity(new ApiResponseDTO(false, "Internal error: " + e.getMessage()),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
 }

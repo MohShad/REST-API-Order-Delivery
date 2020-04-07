@@ -1,5 +1,6 @@
 package br.com.entregapedido.model;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "entrega", schema = "entrega_pedido")
+@Table(name = "entrega")
 public class Entrega implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,6 +40,10 @@ public class Entrega implements Serializable {
     @Column(name = "endereco_entrega")
     private String enderecoEntrega;
 
+    @Basic
+    @GenericGenerator(name = "numero_entrega", strategy = "uuid2")
+    private String numeroEntrega;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Cliente.class)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
@@ -54,12 +59,13 @@ public class Entrega implements Serializable {
     public Entrega() {
     }
 
-    public Entrega(Date createdAt, String numeroPedido, Double valorTotal, Integer quantidadeProduto, String enderecoEntrega, Cliente cliente, Produto produto, Pedido pedido) {
+    public Entrega(Date createdAt, String numeroPedido, Double valorTotal, Integer quantidadeProduto, String enderecoEntrega, String numeroEntrega, Cliente cliente, Produto produto, Pedido pedido) {
         this.createdAt = createdAt;
         this.numeroPedido = numeroPedido;
         this.valorTotal = valorTotal;
         this.quantidadeProduto = quantidadeProduto;
         this.enderecoEntrega = enderecoEntrega;
+        this.numeroEntrega = numeroEntrega;
         this.cliente = cliente;
         this.produto = produto;
         this.pedido = pedido;
@@ -117,6 +123,14 @@ public class Entrega implements Serializable {
         this.enderecoEntrega = enderecoEntrega;
     }
 
+    public String getNumeroEntrega() {
+        return numeroEntrega;
+    }
+
+    public void setNumeroEntrega(String numeroEntrega) {
+        this.numeroEntrega = numeroEntrega;
+    }
+
     public Cliente getCliente() {
         return cliente;
     }
@@ -152,6 +166,7 @@ public class Entrega implements Serializable {
                 Objects.equals(valorTotal, entrega.valorTotal) &&
                 Objects.equals(quantidadeProduto, entrega.quantidadeProduto) &&
                 Objects.equals(enderecoEntrega, entrega.enderecoEntrega) &&
+                Objects.equals(numeroEntrega, entrega.numeroEntrega) &&
                 Objects.equals(cliente, entrega.cliente) &&
                 Objects.equals(produto, entrega.produto) &&
                 Objects.equals(pedido, entrega.pedido);
@@ -160,7 +175,7 @@ public class Entrega implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, createdAt, numeroPedido, valorTotal, quantidadeProduto, enderecoEntrega, cliente, produto, pedido);
+        return Objects.hash(id, createdAt, numeroPedido, valorTotal, quantidadeProduto, enderecoEntrega, numeroEntrega, cliente, produto, pedido);
     }
 
     @Override
@@ -172,6 +187,7 @@ public class Entrega implements Serializable {
                 ", valorTotal=" + valorTotal +
                 ", quantidadeProduto=" + quantidadeProduto +
                 ", enderecoEntrega='" + enderecoEntrega + '\'' +
+                ", numeroEntrega='" + numeroEntrega + '\'' +
                 ", cliente=" + cliente +
                 ", produto=" + produto +
                 ", pedido=" + pedido +

@@ -44,8 +44,13 @@ public class PedidoController {
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @ApiOperation(value = "Cadastro pedido", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Não autorizado"),
+            @ApiResponse(code = 200, message = "OK.")
+    })
     @PostMapping
-    public ResponseEntity<?> registerPedido(@ApiParam(value = "Obejto pedido para criar pedido em banco de dados.", required = true)@Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
+    public ResponseEntity<?> registerPedido(@ApiParam(value = "Obejto pedido para criar pedido em banco de dados.", required = true) @Valid @RequestBody PedidoRequestDTO pedidoRequestDTO) {
 
         try {
             for (int i = 0; pedidoRequestDTO.getProduto().size() > i; i++) {

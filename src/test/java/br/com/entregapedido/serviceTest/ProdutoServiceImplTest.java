@@ -1,4 +1,4 @@
-package br.com.entregapedido;
+package br.com.entregapedido.serviceTest;
 
 import br.com.entregapedido.dto.produtoDTO.ProdutoRequestDTO;
 import br.com.entregapedido.dto.produtoDTO.ProdutoRequestEstoqueDTO;
@@ -41,7 +41,7 @@ public class ProdutoServiceImplTest {
     private ProdutoRepository produtoRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(PedidoServiceImplTest.class);
     }
 

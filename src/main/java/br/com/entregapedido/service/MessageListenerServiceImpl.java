@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.CountDownLatch;
 
 @Service
-public class MessageListenerServiceImpl implements MessageListenerService{
+public class MessageListenerServiceImpl implements MessageListenerService {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageListenerServiceImpl.class);
     private CountDownLatch latch = new CountDownLatch(1);
@@ -28,7 +28,7 @@ public class MessageListenerServiceImpl implements MessageListenerService{
             logger.info("RabbitMQ - Capturando pedido na fila de Entrega - numeroPedido: " + messageDTO.getNumeroPedido());
             entregaService.saveEntrega(messageDTO);
             latch.countDown();
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.error("Erro ao salvar na tabela de Entrega!");
             e.printStackTrace();
         }

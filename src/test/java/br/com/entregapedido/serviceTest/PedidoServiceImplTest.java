@@ -1,4 +1,4 @@
-package br.com.entregapedido;
+package br.com.entregapedido.serviceTest;
 
 import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
 import br.com.entregapedido.dto.pedido.PedidoRequestDTO;
@@ -70,7 +70,7 @@ public class PedidoServiceImplTest {
     private Pedido pedidoMock02;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(PedidoServiceImplTest.class);
     }
 

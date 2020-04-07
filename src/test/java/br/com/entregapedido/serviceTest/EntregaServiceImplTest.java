@@ -1,17 +1,15 @@
-package br.com.entregapedido;
+package br.com.entregapedido.serviceTest;
 
 import br.com.entregapedido.dto.MessageDTO.MessageDTO;
 import br.com.entregapedido.dto.MessageDTO.ProdutoResponseMessageDTO;
-import br.com.entregapedido.model.Cliente;
-import br.com.entregapedido.model.Entrega;
-import br.com.entregapedido.model.Pedido;
-import br.com.entregapedido.model.Produto;
+import br.com.entregapedido.model.*;
 import br.com.entregapedido.repository.ClienteRepository;
 import br.com.entregapedido.repository.EntregaRepository;
 import br.com.entregapedido.repository.PedidoRepository;
 import br.com.entregapedido.repository.ProdutoRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -26,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static br.com.entregapedido.model.PedidoStatus.ABERTO;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -61,7 +60,7 @@ public class EntregaServiceImplTest {
     private Pedido pedidoMock;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(EntregaServiceImplTest.class);
     }
 
@@ -135,6 +134,81 @@ public class EntregaServiceImplTest {
         when(produtoRepository.findById(produtoResponseMessageDTO01.getId())).thenReturn(Optional.of(produtoMock));
         when(pedidoRepository.findById(messageDTOMock.getId())).thenReturn(Optional.of(pedidoMock));
 
+        Cliente clienteMock = new Cliente(
+                "Mohammad Shadnik",
+                "03423423423",
+                new Date(),
+                new Date(),
+                "Av Jorge Casoni",
+                "Rua Maranhão",
+                "86010-250",
+                "Londrina",
+                "PR",
+                "mohammad.shadnik@gmail.com"
+        );
+        clienteMock.setId(3L);
+
+        Produto produtoMock01 = new Produto(
+                "Produto 01",
+                25.50D,
+                48,
+                "345678",
+                new Date(),
+                new Date()
+        );
+        produtoMock01.setId(15L);
+
+        Produto produtoMock02 = new Produto(
+                "Produto 02",
+                25.50D,
+                58,
+                "3456789",
+                new Date(),
+                new Date()
+        );
+        produtoMock02.setId(16L);
+
+        Pedido pedidoMock01 = new Pedido(
+                new Date(),
+                new Date(),
+                new Date(),
+                "Descrição teste",
+                123.50,
+                12,
+                PedidoStatus.ABERTO,
+                "f9be16ca-76a0-4975-ada3-c7867e5c0dbd",
+                clienteMock,
+                produtoMock01
+        );
+
+        List<Entrega> listEntregaResponseDTO = new ArrayList<>();
+        Entrega entrega01 = new Entrega(
+                new Date(),
+                "f9be16ca-76a0-4975-ada3-c7867e5c0dbd",
+                123.50,
+                12,
+                "Av Jorge Casoni",
+                "80e80419-607d-4845-966b-d495de21c926",
+                clienteMock,
+                produtoMock01,
+                pedidoMock01
+        );
+        listEntregaResponseDTO.add(entrega01);
+
+        Entrega entrega02 = new Entrega(
+                new Date(),
+                "f9be16ca-76a0-4975-ada3-c7867e5c0dbd",
+                123.50,
+                12,
+                "Av Jorge Casoni",
+                "80e80419-607d-4845-966b-d495de21c926",
+                clienteMock,
+                produtoMock02,
+                pedidoMock01
+        );
+        listEntregaResponseDTO.add(entrega02);
+
+        when(entregaRepository.findAll()).thenReturn(listEntregaResponseDTO);
     }
 
     @Test
@@ -169,5 +243,13 @@ public class EntregaServiceImplTest {
             e.printStackTrace();
             logger.error(e.getMessage());
         }
+    }
+
+    @Test
+    public void getAllEntregasTest() {
+        List<Entrega> listEntregas = entregaRepository.findAll();
+
+        assertThat(listEntregas.size()).isEqualTo(2);
+        Assertions.assertEquals("80e80419-607d-4845-966b-d495de21c926", listEntregas.get(0).getNumeroEntrega());
     }
 }

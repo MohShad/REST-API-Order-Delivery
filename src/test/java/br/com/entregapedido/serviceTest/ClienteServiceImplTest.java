@@ -1,4 +1,4 @@
-package br.com.entregapedido;
+package br.com.entregapedido.serviceTest;
 
 import br.com.entregapedido.dto.clienteDTO.ClienteResponseDTO;
 import br.com.entregapedido.model.Cliente;
@@ -32,7 +32,7 @@ public class ClienteServiceImplTest {
     private Cliente clienteMock;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(ClienteServiceImplTest.class);
     }
 

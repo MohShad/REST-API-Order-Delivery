@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "pedido", schema = "entrega_pedido")
+@Table(name = "pedido")
 public class Pedido implements Serializable {
 
     private static final long serialVersionUID = 1L;

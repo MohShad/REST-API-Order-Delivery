@@ -19,7 +19,8 @@ public class PedidoRequestDTO implements Serializable {
     @JsonProperty
     private List<ProdutoQuantidadeRequestDTO> produto;
 
-    public PedidoRequestDTO(){}
+    public PedidoRequestDTO() {
+    }
 
     public PedidoRequestDTO(String descricao, Long clienteId, List<ProdutoQuantidadeRequestDTO> produto) {
         this.descricao = descricao;
