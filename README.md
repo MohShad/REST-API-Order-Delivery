@@ -1,29 +1,17 @@
-# README #
+# REST-API-Delivery-Order #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Based on the customer and product registration, it generates an order. The order will be sent to the delivery queue (RabbitMQ), after the message received, it will be saved in the Delivery table.
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* need rabbitmq being installed locally
+* mvn clean install
+* mvn spring-boot:run
 
 ### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* Rabbit-MQ
+* Rest-api
+* Unit Test
+* Spring Data JPA
+* Swagger 2
