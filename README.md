@@ -1,4 +1,4 @@
-# REST-API-Delivery-Order #
+# REST-API-Order-Delivery #
 
 Based on the customer and product registration, it generates an order. The order will be sent to the delivery queue (RabbitMQ), after the message received, it will be saved in the Delivery table.
 
